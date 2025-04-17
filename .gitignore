@@ -1,0 +1,15 @@
+# Default ignored files
+/shelf/
+/.idea/workspace.xml
+/azure/terraform.tfvars
+/azure/.terraform/
+/azure/terraform.tfstate.backup
+/azure/.terraform.lock.hcl
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/DREnabledWorkspaceSetup.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/codeStyles/Project.xml
+/azure/template.tfvars.example
+/azure/terraform.tfstate
+/.idea/vcs.xml
