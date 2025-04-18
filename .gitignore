@@ -13,3 +13,4 @@
 /azure/template.tfvars.example
 /azure/terraform.tfstate
 /.idea/vcs.xml
+/azure/.terraform.tfstate.lock.info
