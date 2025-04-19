@@ -33,6 +33,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.0
         with:
           terraform_version: $TERRAFORM_VERSION
+          terraform_wrapper: false
       - name: Set up Databricks CLI profile for Terraform provider
         run: |
           echo "[DEFAULT]" >> ~/.databrickscfg
@@ -82,6 +83,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.0
         with:
           terraform_version: $TERRAFORM_VERSION
+          terraform_wrapper: false
       - name: Set up Databricks cli profile for Terraform provider
         run: |
           echo "[DEFAULT]" >> ~/.databrickscfg
