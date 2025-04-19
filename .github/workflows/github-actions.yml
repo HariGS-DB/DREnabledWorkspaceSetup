@@ -32,9 +32,9 @@ jobs:
     strategy:
       max-parallel: 4
     env:
-      TF_VAR_LOCATION: ${{ vars.TF_VAR_LOCATION }}
-      TF_VAR_SPOKE_CONFIG: ${{ vars.TF_VAR_SPOKE_CONFIG }}
-      TF_VAR_HUB_RESOURCE_SUFFIX: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
+      TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
+      TF_VAR_spoke_config: ${{ vars.TF_VAR_SPOKE_CONFIG }}
+      TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
 
     steps:
       - uses: actions/checkout@v3
