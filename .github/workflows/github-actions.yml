@@ -1,11 +1,8 @@
 ---
 # This is a basic GitHub Actions pipeline to validate Terraform
 name: Databricks Infrastructure Deployment
-permissions:
-  id-token: write
-  issues: write
-  contents: read
-  pull-requests: read
+permissions: write-all
+
 on:
   push:
     branches: [ main ]
