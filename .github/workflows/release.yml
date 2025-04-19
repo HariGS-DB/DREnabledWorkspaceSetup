@@ -1,10 +1,10 @@
 ---
 # This is a basic GitHub Actions pipeline to validate Terraform
-name: Databricks Infrastructure Deployment
+name: Databricks Infrastructure Deploy
+
 on:
-    push:
-      tags:
-        - 'v*'
+  push:
+    branches: [ main ]
 defaults:
   run:
     working-directory: azure
@@ -20,6 +20,7 @@ env:
   TERRAFORM_VERSION: 1.4.6
 jobs:
   release-prod:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod
     env:
