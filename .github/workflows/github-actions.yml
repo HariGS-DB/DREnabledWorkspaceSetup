@@ -10,14 +10,14 @@ defaults:
   run:
     working-directory: azure
 env:
-  ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+  ARM_CLIENT_ID: ${{ variable.AZURE_AD_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-  BACKEND_RG_NAME: ${{ secrets.BACKEND_RG_NAME }}
-  BACKEND_SA_NAME: ${{ secrets.BACKEND_SA_NAME }}
-  BACKEND_CONTAINER_NAME: ${{ secrets.BACKEND_CONTAINER_NAME }}
-  BACKEND_KEY: ${{ secrets.BACKEND_KEY }}
+  ARM_SUBSCRIPTION_ID: ${{ variable.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ variable.AZURE_AD_TENANT_ID }}
+  BACKEND_RG_NAME: ${{ variable.BACKEND_RG_NAME }}
+  BACKEND_SA_NAME: ${{ variable.BACKEND_SA_NAME }}
+  BACKEND_CONTAINER_NAME: ${{ variable.BACKEND_CONTAINER_NAME }}
+  BACKEND_KEY: ${{ variable.BACKEND_KEY }}
   TERRAFORM_VERSION: 1.4.6
 jobs:
   build:
@@ -134,7 +134,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.0
         with:
           terraform_version: $TERRAFORM_VERSION
-      - name: Set up Databricks profile for Terraform provider
+      - name: Set up Databricks cli profile for Terraform provider
         run: |
           echo "[DEFAULT]" >> ~/.databrickscfg
           echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
