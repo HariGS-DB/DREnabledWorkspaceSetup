@@ -40,6 +40,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.0
         with:
           terraform_version: $TERRAFORM_VERSION
+          terraform_wrapper: false
       - name: Check formatting of Terraform code
         id: fmt
         run: |
