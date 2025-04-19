@@ -21,7 +21,7 @@ env:
 jobs:
   release-prod:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: prod
     env:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
@@ -70,7 +70,7 @@ jobs:
   release-dr:
     needs: [release-prod]
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: dr
     env:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
