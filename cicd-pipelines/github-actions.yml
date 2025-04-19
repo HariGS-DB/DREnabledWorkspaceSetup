@@ -134,7 +134,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.0
         with:
           terraform_version: $TERRAFORM_VERSION
-      - name: Set up Databricks CLI profile for Terraform provider
+      - name: Set up Databricks profile for Terraform provider
         run: |
           echo "[DEFAULT]" >> ~/.databrickscfg
           echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
