@@ -11,7 +11,7 @@ resource "azurerm_databricks_workspace" "this" {
   managed_services_cmk_key_vault_key_id = var.is_kms_enabled ? var.managed_services_key_id : null
   customer_managed_key_enabled          = var.is_kms_enabled
   infrastructure_encryption_enabled     = var.is_kms_enabled
-  public_network_access_enabled         = !var.is_frontend_private_link_enabled
+  public_network_access_enabled         = var.is_frontend_private_link_enabled
   network_security_group_rules_required = var.is_frontend_private_link_enabled ? "NoAzureDatabricksRules" : "AllRules"
 
   custom_parameters {
