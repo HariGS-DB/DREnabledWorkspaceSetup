@@ -18,10 +18,10 @@ data "databricks_group" "metastore_admin_group" {
 
 resource "databricks_group_role" "account_admin" {
   group_id = data.databricks_group.account_admin_group.id
-  role     = var.account_admin
+  role     = "account_admin"
 }
 
 resource "databricks_group_role" "metastore_admin" {
   group_id = data.databricks_group.metastore_admin_group.id
-  role     = var.metastore_admin
+  role     = "metastore_admin"
 }

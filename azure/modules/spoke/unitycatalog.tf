@@ -53,9 +53,6 @@ resource "azurerm_role_assignment" "this" {
   principal_id         = azurerm_databricks_access_connector.unity_catalog.identity[0].principal_id
 }
 
-resource "databricks_group" "metastore_admin_group" {
-  display_name = var.catalog_admin
-}
 
 resource "databricks_storage_credential" "catalog_credential" {
   name                 = "databricks-${var.resource_suffix}-credential"
