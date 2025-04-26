@@ -1,0 +1,120 @@
+---
+# This is a basic GitHub Actions pipeline to validate Terraform
+name: Databricks Infrastructure Deploy
+
+on:
+  push:
+    branches: [ main ]
+defaults:
+  run:
+    working-directory: azure
+env:
+  ARM_CLIENT_ID: ${{ vars.AZURE_AD_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ vars.AZURE_AD_TENANT_ID }}
+  BACKEND_RG_NAME: ${{ vars.BACKEND_RG_NAME }}
+  BACKEND_SA_NAME: ${{ vars.BACKEND_SA_NAME }}
+  BACKEND_CONTAINER_NAME: ${{ vars.BACKEND_CONTAINER_NAME }}
+  BACKEND_KEY: ${{ vars.BACKEND_KEY }}
+  TERRAFORM_VERSION: 1.4.6
+jobs:
+  release-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: self-hosted
+    environment: prod
+    env:
+      TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
+      TF_VAR_spoke_config: ${{ vars.TF_VAR_SPOKE_CONFIG }}
+      TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2.0.0
+        with:
+          terraform_version: $TERRAFORM_VERSION
+          terraform_wrapper: false
+      - name: Set up Databricks CLI profile for Terraform provider
+        run: |
+          echo "[DEFAULT]" >> ~/.databrickscfg
+          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
+          echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
+      - name: Check formatting of Terraform code
+        id: fmt
+        run: |
+          terraform fmt -check
+      - name: Terraform Init
+        id: init
+        run: |
+          terraform init \
+          -backend-config="resource_group_name=$BACKEND_RG_NAME" \
+          -backend-config="storage_account_name=$BACKEND_SA_NAME" \
+          -backend-config="container_name=$BACKEND_CONTAINER_NAME" \
+          -backend-config="key=$BACKEND_KEY"
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -no-color -input=false --auto-approve
+        continue-on-error: true
+      - name: Terraform Apply Status
+        if: steps.apply.outcome == 'failure'
+        run: exit 1
+  release-dr:
+    needs: [release-prod]
+    if: github.ref == 'refs/heads/main'
+    runs-on: self-hosted
+    environment: dr
+    env:
+      TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
+      TF_VAR_spoke_config: ${{ vars.TF_VAR_SPOKE_CONFIG }}
+      TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2.0.0
+        with:
+          terraform_version: $TERRAFORM_VERSION
+          terraform_wrapper: false
+      - name: Set up Databricks cli profile for Terraform provider
+        run: |
+          echo "[DEFAULT]" >> ~/.databrickscfg
+          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
+          echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
+      - name: Check formatting of Terraform code
+        id: fmt
+        run: |
+          terraform fmt -check
+      - name: Terraform Init
+        id: init
+        run: |
+          terraform init \
+          -backend-config="resource_group_name=$BACKEND_RG_NAME" \
+          -backend-config="storage_account_name=$BACKEND_SA_NAME" \
+          -backend-config="container_name=$BACKEND_CONTAINER_NAME" \
+          -backend-config="key=$BACKEND_KEY"
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -no-color -input=false --auto-approve
+        continue-on-error: true
+      - name: Terraform Apply Status
+        if: steps.apply.outcome == 'failure'
+        run: exit 1
