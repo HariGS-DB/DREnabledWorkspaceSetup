@@ -1,1 +1,0 @@
-databricks sync . /Users/dustin.vannoy@databricks.com/flights_sync
