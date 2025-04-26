@@ -31,6 +31,9 @@ module "hub" {
   public_repos    = var.public_repos
   tags            = var.tags
   resource_suffix = var.hub_resource_suffix
+  account_admin = "HSAccountAdmin"
+  metastore_admin = "HSMetastoreAdmin"
+
 
   #options
   is_kms_enabled      = true
@@ -48,6 +51,7 @@ module "spoke" {
   resource_suffix = each.value.resource_suffix
   vnet_cidr       = each.value.cidr
   tags            = each.value.tags
+  catalog_admin  = each.value.catalog_admin
 
   location                = var.location
   route_table_id          = module.hub.route_table_id
@@ -60,6 +64,7 @@ module "spoke" {
   managed_disk_key_id     = module.hub.managed_disk_key_id
   managed_services_key_id = module.hub.managed_services_key_id
   ncc_id                  = module.hub.ncc_id
+
 
   #options
   is_kms_enabled                   = true

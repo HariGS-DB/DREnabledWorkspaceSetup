@@ -35,6 +35,7 @@ variable "spoke_config" {
       resource_suffix = string
       cidr            = string
       tags            = map(string)
+      catalog_admin = string
     }
   ))
   description = "(Required) List of spoke configurations"
