@@ -83,10 +83,6 @@ resource "databricks_external_location" "catalog_location" {
 
 
 
-resource "databricks_group_role" "catalog_admin" {
-  group_id = databricks_group.metastore_admin_group.id
-  role     = data
-}
 
 resource "databricks_catalog" "catalog" {
   name = "databricks-${var.resource_suffix}-catalog"
