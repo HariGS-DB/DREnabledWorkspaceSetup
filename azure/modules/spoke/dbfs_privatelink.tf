@@ -119,3 +119,33 @@ resource "databricks_mws_ncc_private_endpoint_rule" "dbfs_dfs" {
   resource_id                    = data.azurerm_storage_account.dbfs.id
   group_id                       = "dfs"
 }
+
+data "azapi_resource_list" "dbfs_private_endpoint_list" {
+  type                   = "Microsoft.Storage/storageAccounts@2022-09-01"
+  parent_id              = data.azurerm_storage_account.dbfs.id
+  response_export_values = ["properties.privateEndpointConnections"]
+  depends_on = [databricks_mws_ncc_private_endpoint_rule.dbfs_blob,databricks_mws_ncc_private_endpoint_rule.dbfs_dfs]
+}
+
+output "peoutput" {
+  value = data.azapi_resource_list.dbfs_private_endpoint_list.output
+}
+
+#locals {
+#  private_endpoint_connection_name = element([
+#  for connection in jsonencode(data.azapi_resource_list.dbfs_private_endpoint_list.output).properties.privateEndpointConnections:connection.name],0 )
+#}
+#resource "azapi_update_resource" "dbfs_approval" {
+#  type      = "Microsoft.Storage/storageAccounts/privateEndpointConnections@2022-09-01"
+#  //for_each = jsondecode(data.azapi_resource_list.dbfs_private_endpoint_list.output)["value"]
+#  name      = jsondecode(data.azapi_resource_list.dbfs_private_endpoint_list.output)["value"][0].name
+#  parent_id = data.azurerm_storage_account.dbfs.id
+#  body = {
+#    properties = {
+#      privateLinkServiceConnectionState = {
+#        description = "Approved via Terraform"
+#        status      = "Approved"
+#      }
+#    }
+#  }
+#}

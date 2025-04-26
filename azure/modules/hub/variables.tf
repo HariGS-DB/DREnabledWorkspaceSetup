@@ -64,3 +64,11 @@ variable "client_config" {
   type        = any
   description = "(Required) Result of data block `azurerm_client_config current`"
 }
+
+variable "account_admin" {
+  type        = string
+}
+
+variable "metastore_admin" {
+  type        = string
+}
