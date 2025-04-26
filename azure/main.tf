@@ -31,7 +31,7 @@ module "hub" {
   public_repos    = var.public_repos
   tags            = var.tags
   resource_suffix = var.hub_resource_suffix
-  account_admin = "HSAccountAdmin"
+  account_admin   = "HSAccountAdmin"
   metastore_admin = "HSMetastoreAdmin"
 
 
@@ -51,7 +51,7 @@ module "spoke" {
   resource_suffix = each.value.resource_suffix
   vnet_cidr       = each.value.cidr
   tags            = each.value.tags
-  catalog_admin  = each.value.catalog_admin
+  catalog_admin   = each.value.catalog_admin
 
   location                = var.location
   route_table_id          = module.hub.route_table_id
