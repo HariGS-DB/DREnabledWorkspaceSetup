@@ -6,22 +6,16 @@ resource "databricks_metastore" "this" {
   storage_root = ""
   region        = azurerm_resource_group.this.location
   force_destroy = true
+  owner = var.metastore_admin
 }
 
 data "databricks_group" "account_admin_group" {
   display_name = var.account_admin
 }
 
-data "databricks_group" "metastore_admin_group" {
-  display_name = var.metastore_admin
-}
+
 
 resource "databricks_group_role" "account_admin" {
   group_id = data.databricks_group.account_admin_group.id
   role     = "account_admin"
-}
-
-resource "databricks_group_role" "metastore_admin" {
-  group_id = data.databricks_group.metastore_admin_group.id
-  role     = "metastore_admin"
 }
