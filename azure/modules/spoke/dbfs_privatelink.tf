@@ -119,17 +119,17 @@ resource "databricks_mws_ncc_private_endpoint_rule" "dbfs_dfs" {
   resource_id                    = data.azurerm_storage_account.dbfs.id
   group_id                       = "dfs"
 }
-
-data "azapi_resource_list" "dbfs_private_endpoint_list" {
-  type                   = "Microsoft.Storage/storageAccounts@2022-09-01"
-  parent_id              = data.azurerm_storage_account.dbfs.id
-  response_export_values = ["properties.privateEndpointConnections"]
-  depends_on = [databricks_mws_ncc_private_endpoint_rule.dbfs_blob,databricks_mws_ncc_private_endpoint_rule.dbfs_dfs]
-}
-
-output "peoutput" {
-  value = data.azapi_resource_list.dbfs_private_endpoint_list.output
-}
+#
+#data "azapi_resource_list" "dbfs_private_endpoint_list" {
+#  type                   = "Microsoft.Storage/storageAccounts@2022-09-01"
+#  parent_id              = data.azurerm_storage_account.dbfs.id
+#  response_export_values = ["properties.privateEndpointConnections"]
+#  depends_on = [databricks_mws_ncc_private_endpoint_rule.dbfs_blob,databricks_mws_ncc_private_endpoint_rule.dbfs_dfs]
+#}
+#
+#output "peoutput" {
+#  value = data.azapi_resource_list.dbfs_private_endpoint_list.output
+#}
 
 #locals {
 #  private_endpoint_connection_name = element([

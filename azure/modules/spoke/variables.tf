@@ -113,6 +113,3 @@ variable "storage_account_name" {
   description = "(Optional) Name of the storage account created (the metastore root storage account), if not provided - a random name will be generated"
   default     = null
 }
-variable "catalog_admin" {
-  type        = string
-}

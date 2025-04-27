@@ -1,11 +1,8 @@
 ---
 # This is a basic GitHub Actions pipeline to validate Terraform
 name: Databricks Infrastructure Plan
-permissions:
-  id-token: write
-  issues: write
-  contents: read
-  pull-requests: write
+permissions: write-all
+
 on:
   push:
     branches: [ main ]
@@ -33,6 +30,7 @@ jobs:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
       TF_VAR_spoke_config: ${{ vars.TF_VAR_SPOKE_CONFIG }}
       TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
+      TF_VAR_dr: ${{ vars.TF_VAR_DR }}
 
     steps:
       - uses: actions/checkout@v3
