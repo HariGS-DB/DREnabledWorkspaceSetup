@@ -21,6 +21,7 @@ env:
   BACKEND_CONTAINER_NAME: ${{ vars.BACKEND_CONTAINER_NAME }}
   BACKEND_KEY: ${{ vars.BACKEND_KEY }}
   TERRAFORM_VERSION: 1.4.6
+  TF_LOG: DEBUG
 jobs:
   build:
     if: github.event_name == 'pull_request'
