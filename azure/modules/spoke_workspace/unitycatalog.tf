@@ -64,7 +64,7 @@ resource "databricks_storage_credential" "catalog_credential" {
 
 
 resource "databricks_external_location" "catalog_location" {
-  name = "databricks-${var.resource_suffix}-catalog-location"
+  name = "databricks-catalog-location"
   url = format("abfss://%s@%s.dfs.core.windows.net",
     azurerm_storage_container.unity_catalog.name,
     var.catalog_storage.name)
@@ -76,7 +76,7 @@ resource "databricks_external_location" "catalog_location" {
 }
 
 resource "databricks_external_location" "external_deltatable_location" {
-  name = "databricks-${var.resource_suffix}-external-deltatable-location"
+  name = "databricks-external-deltatable-location"
   url = format("abfss://%s@%s.dfs.core.windows.net",
     azurerm_storage_container.external_tables_delta.name,
     var.catalog_storage.name)
@@ -88,7 +88,7 @@ resource "databricks_external_location" "external_deltatable_location" {
 }
 
 resource "databricks_external_location" "external_volume_location" {
-  name = "databricks-${var.resource_suffix}-external-volume-location"
+  name = "databricks-external-volume-location"
   url = format("abfss://%s@%s.dfs.core.windows.net",
     azurerm_storage_container.external_volume.name,
     var.volume_storage.name)
