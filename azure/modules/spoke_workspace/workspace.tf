@@ -1,10 +1,10 @@
-data "databricks_node_type" "smallest" {
-  local_disk = true
-}
-
-data "databricks_spark_version" "latest_lts" {
-  long_term_support = true
-}
+#data "databricks_node_type" "smallest" {
+#  local_disk = true
+#}
+#
+#data "databricks_spark_version" "latest_lts" {
+#  long_term_support = true
+#}
 #resource "databricks_cluster" "dr_cluster" {
 #  count = var.dr ? 1 : 0
 #  cluster_name            = "DRSyncCluster"
