@@ -33,6 +33,7 @@ jobs:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
       TF_VAR_spoke_config: ${{ vars.TF_VAR_SPOKE_CONFIG }}
       TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
+      TF_VAR_dr: ${{ vars.TF_VAR_DR }}
 
     steps:
       - uses: actions/checkout@v3

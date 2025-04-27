@@ -83,6 +83,7 @@ resource "azurerm_key_vault_access_policy" "terraform" {
   ]
 }
 
+
 resource "azurerm_key_vault_access_policy" "databricks" {
   count = var.is_kms_enabled ? 1 : 0
 

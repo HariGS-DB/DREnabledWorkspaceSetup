@@ -51,3 +51,7 @@ variable "subscription_id" {
   type        = string
   description = "(Required) Azure Subscription ID to deploy into"
 }
+
+variable "dr" {
+  type = bool
+}

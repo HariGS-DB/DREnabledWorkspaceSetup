@@ -38,38 +38,6 @@ module "hub" {
   #options
   is_kms_enabled      = true
   is_firewall_enabled = true
-}
+  providers           = { databricks = databricks.mws }
 
-# Define module "spoke" with a for_each loop to iterate over each spoke configuration
-module "spoke" {
-
-  for_each = var.spoke_config
-
-  source = "./modules/spoke"
-
-  # Pass the required variables to the module
-  resource_suffix = each.value.resource_suffix
-  vnet_cidr       = each.value.cidr
-  tags            = each.value.tags
-  catalog_admin   = each.value.catalog_admin
-
-  location                = var.location
-  route_table_id          = module.hub.route_table_id
-  metastore_id            = module.hub.metastore_id
-  hub_vnet_name           = module.hub.vnet_name
-  hub_resource_group_name = module.hub.resource_group_name
-  hub_vnet_id             = module.hub.vnet_id
-  key_vault_id            = module.hub.key_vault_id
-  ipgroup_id              = module.hub.ipgroup_id
-  managed_disk_key_id     = module.hub.managed_disk_key_id
-  managed_services_key_id = module.hub.managed_services_key_id
-  ncc_id                  = module.hub.ncc_id
-
-
-  #options
-  is_kms_enabled                   = true
-  is_frontend_private_link_enabled = true
-  boolean_create_private_dbfs      = true
-
-  depends_on = [module.hub]
 }
