@@ -103,7 +103,7 @@ resource "databricks_external_location" "external_volume_location" {
 
 
 resource "databricks_catalog" "catalog" {
-  name = "databricks-${var.resource_suffix}-catalog"
+  name = "databricks-catalog1"
   storage_root = format("abfss://%s@%s.dfs.core.windows.net",
     azurerm_storage_container.unity_catalog.name,
     var.catalog_storage.name)
