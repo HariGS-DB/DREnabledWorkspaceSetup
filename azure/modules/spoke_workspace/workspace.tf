@@ -5,17 +5,17 @@ data "databricks_node_type" "smallest" {
 data "databricks_spark_version" "latest_lts" {
   long_term_support = true
 }
-resource "databricks_cluster" "dr_cluster" {
-  count = var.dr ? 1 : 0
-  cluster_name            = "DRSyncCluster"
-  spark_version           = data.databricks_spark_version.latest_lts.id
-  node_type_id            = data.databricks_node_type.smallest.id
-  autotermination_minutes = 20
-  autoscale {
-    min_workers = 1
-    max_workers = 5
-    }
-}
+#resource "databricks_cluster" "dr_cluster" {
+#  count = var.dr ? 1 : 0
+#  cluster_name            = "DRSyncCluster"
+#  spark_version           = data.databricks_spark_version.latest_lts.id
+#  node_type_id            = data.databricks_node_type.smallest.id
+#  autotermination_minutes = 20
+#  autoscale {
+#    min_workers = 1
+#    max_workers = 5
+#    }
+#}
 
 resource "databricks_directory" "drnotebooks" {
 
@@ -101,7 +101,7 @@ resource "databricks_job" "dr_sync_job" {
       notebook_path = databricks_notebook.sync_external_tables[0].path
     }
     depends_on {
-      task_key = "sync_schemas"
+      task_key = "sync_managed_table"
     }
   }
   task {
