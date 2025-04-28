@@ -44,9 +44,6 @@ targets:
       root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     run_as:
       user_name: ${workspace.current_user.userName}
-    variables:
-      database: flights_${bundle.target}
-      flights_test_schema: flights_validation_${bundle.target}
 
   dr:
     # For test/staging deployments, we only have a single copy, so we should deploy as
@@ -56,8 +53,5 @@ targets:
       root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     run_as:
       user_name: ${workspace.current_user.userName}
-    variables:
-      database: flights_${bundle.target}
-      flights_test_schema: flights_validation_${bundle.target}
 
 
