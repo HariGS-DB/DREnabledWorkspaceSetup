@@ -18,7 +18,7 @@ jobs:
     environment: test
     defaults:
       run:
-        working-directory: .
+        working-directory: ./code
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.10
