@@ -8,7 +8,7 @@ on:
     paths:
       - "code/**"
 jobs:
-  prod:
+  release-prod:
     name: "Test and deploy bundle"
     runs-on: self-hosted
     environment: prod
@@ -31,8 +31,9 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ vars.AZURE_AD_TENANT_ID }}
-  dr:
+  release-dr:
     name: "Test and deploy bundle"
+    needs: [release-prod]
     runs-on: self-hosted
     environment: dr
     defaults:
