@@ -10,8 +10,6 @@ variables:
     default: "catalog1"
   database:
     default: "schema1"
-  flights_test_schema:
-    default: "schema1_validation"
   spark_version:
     default: "15.3.x-scala2.12"
   node_type_id:
