@@ -33,9 +33,9 @@ jobs:
       #----------------------------------------------
       - name: Run unit tests
         env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_HOST: ${{ var.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_TST }}
-          DATABRICKS_CLUSTER_ID: ${{ secrets.DATABRICKS_CLUSTER_ID }}
+          DATABRICKS_CLUSTER_ID: ${{ var.DATABRICKS_CLUSTER_ID }}
         run: |
           pytest tests/ 
 
