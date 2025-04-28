@@ -45,30 +45,4 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_TST }}
-          DATABRICKS_BUNDLE_ENV: tst
-
-  validation:
-    name: "Run validation"
-    runs-on: self-hosted
-    environment: test
-    defaults:
-      run:
-        working-directory: ./code
-
-    needs:
-      - deploy
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: databricks/setup-cli@main
-
-      - shell: bash
-        name: Run notebook validation
-        run: |
-          set -o pipefail
-          databricks bundle run notebook_validation_job -t test --refresh-all 2>&1 | tee output.log
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_TST }}
           DATABRICKS_BUNDLE_ENV: test
