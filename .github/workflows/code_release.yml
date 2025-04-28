@@ -5,8 +5,6 @@ name: Databricks Infrastructure Deploy
 on:
   push:
     branches: [ main ]
-    paths:
-      - "azure/**"
 defaults:
   run:
     working-directory: azure
@@ -29,7 +27,6 @@ jobs:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
       TF_VAR_spoke_config: ${{ vars.TF_VAR_SPOKE_CONFIG }}
       TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
-      TF_VAR_dr: ${{ vars.TF_VAR_DR }}
     steps:
       - uses: actions/checkout@v3
       - name: Install Terraform
@@ -57,6 +54,13 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
       - name: Terraform Apply
         id: apply
         run: terraform apply -no-color -input=false --auto-approve
@@ -73,7 +77,6 @@ jobs:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
       TF_VAR_spoke_config: ${{ vars.TF_VAR_SPOKE_CONFIG }}
       TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
-      TF_VAR_dr: ${{ vars.TF_VAR_DR }}
     steps:
       - uses: actions/checkout@v3
       - name: Install Terraform
@@ -101,6 +104,13 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
       - name: Terraform Apply
         id: apply
         run: terraform apply -no-color -input=false --auto-approve
