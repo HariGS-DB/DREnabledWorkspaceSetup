@@ -43,15 +43,28 @@ The replication job consists of the following tasks:
 
 The CICD process is implemented using two github actions:
  - infra_push.yml: This action is triggered on PR submission to main branch and runs terraform fmt, validate, init and plan
- - infra_release.yml: This action is triggere on PR merge following approval. This ensures the infra is deployed in 
+ - infra_release.yml: This action is triggered on PR merge following approval. This ensures the infra is deployed in 
 both primary and secondary region. It uses github environment variables to determin the right region setup.
  - The end to end infra is deployed using a service principal which has permission on two regions within a subscription
+
 The high level flow of terraform infra CICD is shown below
 
-![TFCICD.png](images%2FTFCICD.png)
+![tfcicd.png](images%2Ftfcicd.png)
+
 ### Code CICD
 
+In addition to infra, the repo also contains example to deploy code using Databricks asset bundles and CICD.
 
+The CICD process is implemented using two github actions:
+- code_push.yml: This action is triggered on PR submission to main branch and runs pytest to perform unit tests and deploys the code in test 
+environment using databricks bundle deploy --target test
+- code_release.yml: This action is triggered on PR merge following approval. This ensures the code is deployed in
+  both primary and secondary region. It uses github environment variables to determine the right region setup. It deploys the 
+  code using databricks bundle deploy --target prod(and dr for secondary)
+
+The high level flow of code CICD using dabs is shown below
+
+![codecicd.png](images%2Fcodecicd.png)
 
 ### Instruction to Deploy Infra
 
