@@ -44,7 +44,7 @@ targets:
       host: https://adb-1176745333267703.3.azuredatabricks.net/
       root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     run_as:
-      user_name: ${workspace.current_user.userName}
+      service_principal_name: ${workspace.current_user.userName}
 
   dr:
     # For test/staging deployments, we only have a single copy, so we should deploy as
@@ -54,6 +54,7 @@ targets:
       host: https://adb-3376845522841643.3.azuredatabricks.net/
       root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     run_as:
-      user_name: ${workspace.current_user.userName}
+
+      service_principal_name: ${workspace.current_user.userName}
 
 
