@@ -68,22 +68,23 @@ The high level flow of code CICD using dabs is shown below
 
 ### Instruction to Deploy Infra
 
-1. Open the Entra appliation created from the Azure Bot
-2. Go to authentication and add Web redirect url as "https://token.botframework.com/.auth/web/redirect"
-3. Go Expose an API:
-* Click Add application URI and enter the uri in the format: "api://botid-<GeneratedID>"
-* Add a scope:
-    * name of scope "scope_as_user"
-    * Who can consent: Admin and Users
-    * Admin consent display name: "Teams can access User Profile"
-    * Admin consent description: "Teams can access User Profile"
-    * User consent display name: "Teams can access User Profile and make request on behalf of the User"
-    * Click save
-* Under authorized client application, click add application:
-    * add 5e3ce6c0-2b1f-4285-8d4b-75ee78787346 (Teams web application) and select the created scope
-    * add 1fec8e78-bce4-4aaf-ab1b-5451cc387264 (Teams desktop/mobile application) and select the created scope
-4. Go to API permissions and add the following permissions:
-* Azure Databricks -> User Impersonation
-* Microsoft Graph  -> email, openid, offline_access, profile, User.Read
-
-
+1. Open terraform.tfvars and edit the following
+   - databricks_account_id: databricks account id
+   - hub_vnet_cidr: cidr of hub vnet
+   - tags: to be applied on the resources
+   - subscription_id: subscription id of the azure tenant
+    
+2. Use github settings to create two environment (prod and dr) and store the following
+   - TF_VAR_HUB_RESOURCE_SUFFIX: resource suffix for each environment
+   - TF_VAR_LOCATION: infra deployment azure region
+   - TF_VAR_SPOKE_CONFIG: spoke config (sample value in terraform.tfvars)
+   - TF_VAR_DR: flag to set if its dr oor not (false in prod and true in dr)
+   - BACKEND_CONTAINER_NAME: seperate container name to store the tf state file for both primary and secondary region
+3. In addition also create github variables for following:
+   - AZURE_AD_CLIENT_ID
+   - AZURE_AD_TENANT_ID
+   - AZURE_SUBSCRIPTION_ID
+   - BACKEND_RG_NAME
+   - BACKEND_SA_NAME
+   - BACKEND_KEY
+4. Create a secret to store the service principal secret
