@@ -6,7 +6,7 @@ This repo helps in setting up a Databricks workspace for Disaster Recovery readi
 in a Active Passive mode on azure cloud across two regions. It Also contains code which are deployed to run and sync the data between the two region
 
 ## Architecture Diagram
-![Azure PL DR Set up.png](images%2FAzure%20PL%20DR%20Set%20up.png)
+![Azure DR Setup.png](images%2FAzure%20DR%20Setup.png)
 
 ## Key Features
 
@@ -23,11 +23,21 @@ in a Active Passive mode on azure cloud across two regions. It Also contains cod
 
 ## Data Replication Job
 
-- Create a App Service Plan
-- Create a Web App
-- Create a Azure Bot
-- Create Entra Application with configuration
-- App Manifest to create a Teams App
+The data replication job gets deployed as part of the infra deployment. The job is deployed in the secondary workspace and syncs
+data from primary to secondary workspace.
+Two storage account is created in each workspace
+ - uc storage: This storage account contains two containers, one for uc managed catalog location and another for external 
+delta table location. The data in this storage is replicated using deep clone, and underlying cloud replication is not used
+ - external storage: This storage account contains container to store external non delta table and external volume.
+This storage account is enabled with GRS to replicate the data using cloud services.
+
+The replication job consists of the following tasks:
+- sync schemas between primary and secondary
+- run deep clone using shared sync for managed table from primary to secondary
+- run deep clone for external delta table
+- sync views from primary to secondary
+- create external volumes from primary to secondary
+- sync UC permissions from primary to secondary using the information schema system tables
 
 ## Infra CICD
 
