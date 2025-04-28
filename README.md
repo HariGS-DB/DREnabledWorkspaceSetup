@@ -41,6 +41,14 @@ The replication job consists of the following tasks:
 
 ## Infra CICD
 
+The CICD process is implemented using two github actions:
+ - infra_push.yml: This action is triggered on PR submission to main branch and runs terraform fmt, validate, init and plan
+ - infra_release.yml: This action is triggere on PR merge following approval. This ensures the infra is deployed in 
+both primary and secondary region. It uses github environment variables to determin the right region setup.
+ - The end to end infra is deployed using a service principal which has permission on two regions within a subscription
+The high level flow of terraform infra CICD is shown below
+
+![TFCICD.png](images%2FTFCICD.png)
 ### Code CICD
 
 
