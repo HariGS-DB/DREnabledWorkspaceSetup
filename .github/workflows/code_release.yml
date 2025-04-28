@@ -9,7 +9,7 @@ on:
       - "code/**"
 jobs:
   release-prod:
-    name: "Test and deploy bundle"
+    name: "Deploy Prod"
     runs-on: self-hosted
     environment: prod
     defaults:
@@ -32,7 +32,7 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ vars.AZURE_AD_TENANT_ID }}
   release-dr:
-    name: "Test and deploy bundle"
+    name: "Deploy DR"
     needs: [release-prod]
     runs-on: self-hosted
     environment: dr
