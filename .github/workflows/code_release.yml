@@ -1,10 +1,12 @@
 ---
 # This is a basic GitHub Actions pipeline to validate Terraform
-name: Databricks Infrastructure Deploy
+name: Dab Code Release
 
 on:
   push:
     branches: [ main ]
+    paths:
+      - "code/**"
 defaults:
   run:
     working-directory: azure
