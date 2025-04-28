@@ -53,7 +53,7 @@ jobs:
     environment: test
     defaults:
       run:
-        working-directory: .
+        working-directory: ./code
 
     needs:
       - deploy
@@ -71,4 +71,4 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_TST }}
-          DATABRICKS_BUNDLE_ENV: tst
+          DATABRICKS_BUNDLE_ENV: test
