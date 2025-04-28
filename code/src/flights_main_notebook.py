@@ -46,4 +46,4 @@ df_transformed = (
 # COMMAND ----------
 
 df_transformed.write.format("delta").mode("append").saveAsTable(raw_table_name)
-print(f"Succesfully wrote data to {raw_table_name}")
+print(f"Succesfully wrote data to the location {raw_table_name}")
