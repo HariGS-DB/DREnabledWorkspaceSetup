@@ -67,7 +67,7 @@ jobs:
         name: Run notebook validation
         run: |
           set -o pipefail
-          databricks bundle run notebook_validation_job -t test_automated --refresh-all 2>&1 | tee output.log
+          databricks bundle run notebook_validation_job -t test --refresh-all 2>&1 | tee output.log
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_TST }}
