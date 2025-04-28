@@ -1,4 +1,4 @@
-name: Deploy flights_project to TEST
+name: Dab Code Testing
 permissions:
   id-token: write
   issues: write
@@ -21,10 +21,10 @@ jobs:
         working-directory: ./code
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.10
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - run: python -m pip install --upgrade pip
       - run: pip install -r requirements.txt -r dev-requirements.txt
 
