@@ -3,10 +3,10 @@ hub_vnet_cidr         = "10.0.0.0/22"
 tags = {
   Owner = "hari.selvarajan@databricks.com"
 }
-hub_resource_suffix="hsprodhub"
-location="northeurope"
-subscription_id = "edd4cc45-85c7-4aec-8bf5-648062d519bf"
+hub_resource_suffix = "hsprodhub"
+location            = "northeurope"
+subscription_id     = "edd4cc45-85c7-4aec-8bf5-648062d519bf"
 
-spoke_suffix="prodspoke"
-spoke_tag={environment="prod"}
-dr = false
+spoke_suffix = "prodspoke"
+spoke_tag    = { environment = "prod" }
+dr           = false
