@@ -56,7 +56,6 @@ variable "firewall_sku" {
 variable "resource_suffix" {
   type        = string
   description = "(Optional) Naming resource_suffix for resources"
-  default     = "hub"
 }
 
 
