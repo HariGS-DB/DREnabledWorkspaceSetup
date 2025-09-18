@@ -6,9 +6,9 @@ module "spoke" {
   source = "./modules/spoke"
 
   # Pass the required variables to the module
-  resource_suffix = var.spoke_config["spoke1"].resource_suffix
-  vnet_cidr       = var.spoke_config["spoke1"].cidr
-  tags            = var.spoke_config["spoke1"].tags
+  resource_suffix = var.spoke_suffix
+  vnet_cidr       = "10.1.0.0/20"
+  tags            = var.tags
 
   location                = var.location
   route_table_id          = module.hub.route_table_id
@@ -38,14 +38,14 @@ module "spoke_workspace" {
   source = "./modules/spoke_workspace"
 
   # Pass the required variables to the module
-  resource_suffix = var.spoke_config["spoke1"].resource_suffix
+  resource_suffix = var.spoke_suffix
 
-  tags = var.spoke_config["spoke1"].tags
+  tags = var.spoke_tag
 
   location                  = var.location
   catalog_storage           = module.spoke.catalog_storage
   volume_storage            = module.spoke.volume_storage
-  catalog_admin             = var.spoke_config["spoke1"].catalog_admin
+  catalog_admin             = "Catalog1Admin"
   metastore_id              = module.hub.metastore_id
   spoke_resource_group_name = module.spoke.resource_group_name
   dr                        = var.dr

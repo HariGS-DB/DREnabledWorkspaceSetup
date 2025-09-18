@@ -29,16 +29,14 @@ variable "public_repos" {
   default     = ["python.org", "*.python.org", "pypi.org", "*.pypi.org", "pythonhosted.org", "*.pythonhosted.org", "cran.r-project.org", "*.cran.r-project.org", "r-project.org"]
 }
 
-variable "spoke_config" {
-  type = map(object(
-    {
-      resource_suffix = string
-      cidr            = string
-      tags            = map(string)
-      catalog_admin   = string
-    }
-  ))
-  description = "(Required) List of spoke configurations"
+
+variable "spoke_suffix" {
+  type        = string
+  description = "(Required) Resource suffix for naming resources in hub"
+}
+variable "spoke_tag" {
+  type        = map(string)
+  description = "(Required) tag for spoke resources"
 }
 
 variable "tags" {
