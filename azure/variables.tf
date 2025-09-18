@@ -41,6 +41,15 @@ variable "spoke_config" {
   description = "(Required) List of spoke configurations"
 }
 
+variable "spoke_suffix" {
+  type        = string
+  description = "(Required) Resource suffix for naming resources in hub"
+}
+variable "spoke_tag" {
+  type        = map(string)
+  description = "(Required) tag for spoke resources"
+}
+
 variable "tags" {
   type        = map(string)
   description = "(Optional) Map of tags to attach to resources"
