@@ -25,7 +25,7 @@ module "spoke" {
 
   #options
   is_kms_enabled                   = true
-  is_frontend_private_link_enabled = true
+  is_frontend_private_link_enabled = false
   boolean_create_private_dbfs      = true
 
   depends_on = [module.hub]
