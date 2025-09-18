@@ -8,7 +8,7 @@ module "spoke" {
   # Pass the required variables to the module
   resource_suffix = var.spoke_suffix
   vnet_cidr       = "10.1.0.0/20"
-  tags            = var.tags
+  tags            = var.spoke_tag
 
   location                = var.location
   route_table_id          = module.hub.route_table_id
