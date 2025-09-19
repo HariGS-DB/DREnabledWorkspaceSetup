@@ -14,7 +14,7 @@ variable "hub_vnet_cidr" {
 
 variable "hub_storage_account_name" {
   type        = string
-  description = "Name of the storage account created in hub (the metastore root storage account), will be generated if not provided"
+  description = "(Optional) Name of the storage account created in hub (the metastore root storage account), will be generated if not provided"
   default     = null
 }
 
