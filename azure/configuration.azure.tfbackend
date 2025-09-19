@@ -1,4 +1,0 @@
-resource_group_name  = "hsrg"
-storage_account_name = "hstfstatestorage"
-container_name       = "tfstate"
-key                  = "terraform.tfstate"
