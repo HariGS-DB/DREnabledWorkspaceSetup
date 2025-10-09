@@ -28,12 +28,7 @@ resource "databricks_sql_endpoint" "dr_warehouse" {
   enable_serverless_compute = true
   auto_stop_mins   = 10
   
-  tags = {
-    custom_tags = jsonencode({
-      "purpose" = "dr-sync"
-      "environment" = "dr"
-    })
-  }
+  
 }
 
 resource "databricks_directory" "drnotebooks" {
