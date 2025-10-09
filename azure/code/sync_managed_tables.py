@@ -32,7 +32,6 @@ from common_spn import (
     num_exec,
     dr_warehouse_id,
     response_backoff,
-    metastore_id,
 )
 
 
@@ -114,10 +113,10 @@ except BadRequest:
             for r in w_source.recipients.list()
             if r.data_recipient_global_metastore_id == local_metastore_id
         ][0]
-        print(f"Recipient with id {metastore_id} already exists. Skipping creation...")
+        print(f"Recipient with id {local_metastore_id} already exists. Skipping creation...")
     except IndexError:
         print(
-            f"Recipient with id {metastore_id} does not exist in source workspace. Please validate the id and create it manually."
+            f"Recipient with id {local_metastore_id} does not exist in source workspace. Please validate the id and create it manually."
         )
         sys.exit()
 
@@ -130,7 +129,7 @@ try:
     remote_provider_name = [
         p.name
         for p in w_target.providers.list()
-        if p.data_provider_global_metastore_id == metastore_id
+        if p.data_provider_global_metastore_id == local_metastore_id
     ][0]
 except IndexError:
     print(

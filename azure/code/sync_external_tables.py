@@ -33,7 +33,6 @@ from common_spn import (
     num_exec,
     dr_warehouse_id,
     response_backoff,
-    metastore_id,
 )
 
 

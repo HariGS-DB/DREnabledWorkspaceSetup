@@ -18,6 +18,24 @@ resource "databricks_cluster" "dr_cluster" {
     }
 }
 
+# DR Serverless Warehouse for sync operations
+resource "databricks_sql_endpoint" "dr_warehouse" {
+  count = var.dr ? 1 : 0
+  
+  name             = "DR-Sync-Warehouse"
+  cluster_size     = "2X-Small"
+  warehouse_type   = "PRO"
+  enable_serverless_compute = true
+  auto_stop_mins   = 10
+  
+  tags = {
+    custom_tags = jsonencode({
+      "purpose" = "dr-sync"
+      "environment" = "dr"
+    })
+  }
+}
+
 resource "databricks_directory" "drnotebooks" {
 
   count = var.dr ? 1 : 0

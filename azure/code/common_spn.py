@@ -11,14 +11,13 @@ from databricks.sdk.core.oauth import ClientCredentials
 # Configuration parameters
 num_exec = 10  # Number of concurrent workers
 response_backoff = 5  # Backoff time in seconds for polling operations
-dr_warehouse_id = "your_warehouse_id"  # Replace with actual warehouse ID
-metastore_id = "your_metastore_id"  # Replace with actual metastore ID
 
 # Secret scope and keys for Service Principal authentication
 SECRET_SCOPE = "dr-service-principal"
 CLIENT_ID_KEY = "client-id"
 CLIENT_SECRET_KEY = "client-secret"
 PROD_WORKSPACE_URL_KEY = "prod-workspace-url"
+DR_WAREHOUSE_ID_KEY = "dr-warehouse-id"
 DR_WORKSPACE_URL_KEY = "dr-workspace-url"
 
 
@@ -40,6 +39,15 @@ def get_workspace_urls():
         return source_host, target_host
     except Exception as e:
         raise RuntimeError(f"Failed to retrieve workspace URLs from secrets: {str(e)}")
+
+
+def get_dr_warehouse_id():
+    """Get DR warehouse ID from Databricks secrets."""
+    try:
+        warehouse_id = dbutils.secrets.get(scope=SECRET_SCOPE, key=DR_WAREHOUSE_ID_KEY)
+        return warehouse_id
+    except Exception as e:
+        raise RuntimeError(f"Failed to retrieve DR warehouse ID from secrets: {str(e)}")
 
 
 def create_workspace_client(workspace_url):
@@ -76,9 +84,13 @@ def create_workspace_client(workspace_url):
 # Get workspace URLs from secrets
 source_host, target_host = get_workspace_urls()
 
+# Get DR warehouse ID from secrets
+dr_warehouse_id = get_dr_warehouse_id()
+
 # Create authenticated workspace clients
 print(f"🔗 Connecting to source workspace: {source_host}")
 print(f"🔗 Connecting to target workspace: {target_host}")
+print(f"🏭 Using DR warehouse: {dr_warehouse_id}")
 
 try:
     w_source = create_workspace_client(source_host)
@@ -90,6 +102,7 @@ try:
     
     print(f"✅ Source workspace connected as: {source_user.user_name}")
     print(f"✅ Target workspace connected as: {target_user.user_name}")
+    print(f"✅ DR warehouse ID retrieved: {dr_warehouse_id}")
     
 except Exception as e:
     print(f"❌ Failed to establish workspace connections: {str(e)}")
