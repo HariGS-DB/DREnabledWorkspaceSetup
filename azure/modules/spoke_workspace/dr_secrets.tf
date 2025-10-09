@@ -43,6 +43,6 @@ resource "databricks_secret" "dr_workspace_url" {
   count = var.dr && var.job_spn_client_id != "" && var.job_spn_client_secret != "" ? 1 : 0
   
   key          = "dr-workspace-url"
-  string_value = azurerm_databricks_workspace.this.workspace_url
+  string_value = var.workspace_url
   scope        = databricks_secret_scope.dr_spn_scope[0].name
 }

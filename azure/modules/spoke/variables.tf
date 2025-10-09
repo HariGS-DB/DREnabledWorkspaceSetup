@@ -132,16 +132,3 @@ variable "dr" {
   default     = false
 }
 
-variable "job_spn_client_id" {
-  type        = string
-  description = "(Optional) Service Principal Client ID for job authentication and cross-workspace operations"
-  default     = ""
-  sensitive   = true
-}
-
-variable "job_spn_client_secret" {
-  type        = string
-  description = "(Optional) Service Principal Client Secret for job authentication and cross-workspace operations"
-  default     = ""
-  sensitive   = true
-}
