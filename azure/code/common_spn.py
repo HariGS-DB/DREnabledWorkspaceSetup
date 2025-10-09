@@ -1,0 +1,100 @@
+# Databricks notebook source
+"""
+Common module for DR sync operations using Service Principal authentication.
+This module replaces PAT token authentication with Service Principal credentials
+stored in Databricks secrets.
+"""
+
+from databricks.sdk import WorkspaceClient
+from databricks.sdk.core.oauth import ClientCredentials
+
+# Configuration parameters
+num_exec = 10  # Number of concurrent workers
+response_backoff = 5  # Backoff time in seconds for polling operations
+dr_warehouse_id = "your_warehouse_id"  # Replace with actual warehouse ID
+metastore_id = "your_metastore_id"  # Replace with actual metastore ID
+
+# Secret scope and keys for Service Principal authentication
+SECRET_SCOPE = "dr-service-principal"
+CLIENT_ID_KEY = "client-id"
+CLIENT_SECRET_KEY = "client-secret"
+PROD_WORKSPACE_URL_KEY = "prod-workspace-url"
+DR_WORKSPACE_URL_KEY = "dr-workspace-url"
+
+
+def get_spn_credentials():
+    """Get Service Principal credentials from Databricks secrets."""
+    try:
+        client_id = dbutils.secrets.get(scope=SECRET_SCOPE, key=CLIENT_ID_KEY)
+        client_secret = dbutils.secrets.get(scope=SECRET_SCOPE, key=CLIENT_SECRET_KEY)
+        return client_id, client_secret
+    except Exception as e:
+        raise RuntimeError(f"Failed to retrieve SPN credentials from secrets: {str(e)}")
+
+
+def get_workspace_urls():
+    """Get workspace URLs from Databricks secrets."""
+    try:
+        source_host = dbutils.secrets.get(scope=SECRET_SCOPE, key=PROD_WORKSPACE_URL_KEY)
+        target_host = dbutils.secrets.get(scope=SECRET_SCOPE, key=DR_WORKSPACE_URL_KEY)
+        return source_host, target_host
+    except Exception as e:
+        raise RuntimeError(f"Failed to retrieve workspace URLs from secrets: {str(e)}")
+
+
+def create_workspace_client(workspace_url):
+    """
+    Create a WorkspaceClient using Service Principal authentication.
+    
+    Args:
+        workspace_url (str): The Databricks workspace URL
+        
+    Returns:
+        WorkspaceClient: Authenticated workspace client
+    """
+    try:
+        client_id, client_secret = get_spn_credentials()
+        
+        # Create OAuth2 credentials
+        credentials = ClientCredentials(
+            client_id=client_id,
+            client_secret=client_secret
+        )
+        
+        # Create workspace client
+        client = WorkspaceClient(
+            host=workspace_url,
+            credentials=credentials
+        )
+        
+        return client
+        
+    except Exception as e:
+        raise RuntimeError(f"Failed to create WorkspaceClient for {workspace_url}: {str(e)}")
+
+
+# Get workspace URLs from secrets
+source_host, target_host = get_workspace_urls()
+
+# Create authenticated workspace clients
+print(f"🔗 Connecting to source workspace: {source_host}")
+print(f"🔗 Connecting to target workspace: {target_host}")
+
+try:
+    w_source = create_workspace_client(source_host)
+    w_target = create_workspace_client(target_host)
+    
+    # Test connectivity
+    source_user = w_source.current_user.me()
+    target_user = w_target.current_user.me()
+    
+    print(f"✅ Source workspace connected as: {source_user.user_name}")
+    print(f"✅ Target workspace connected as: {target_user.user_name}")
+    
+except Exception as e:
+    print(f"❌ Failed to establish workspace connections: {str(e)}")
+    raise
+
+# Legacy compatibility - expose the workspace clients as expected by sync scripts
+# These replace the old PAT token based clients
+print("🔄 Service Principal authentication ready for DR sync operations")

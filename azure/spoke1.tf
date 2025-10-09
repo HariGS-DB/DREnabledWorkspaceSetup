@@ -21,6 +21,11 @@ module "spoke" {
   managed_disk_key_id     = module.hub.managed_disk_key_id
   managed_services_key_id = module.hub.managed_services_key_id
   ncc_id                  = module.hub.ncc_id
+  prod_workspace_url      = var.prod_workspace_url
+  prod_catalog_storage    = var.prod_catalog_storage
+  dr                      = var.dr
+  job_spn_client_id       = var.job_spn_client_id
+  job_spn_client_secret   = var.job_spn_client_secret
 
 
   #options

@@ -113,3 +113,35 @@ variable "storage_account_name" {
   description = "(Optional) Name of the storage account created (the metastore root storage account), if not provided - a random name will be generated"
   default     = null
 }
+
+variable "prod_workspace_url" {
+  type        = string
+  description = "(Optional) Production workspace URL for DR configuration and cross-workspace operations"
+  default     = ""
+}
+
+variable "prod_catalog_storage" {
+  type        = string
+  description = "(Optional) Production catalog storage account ID for Unity Catalog replication and DR"
+  default     = ""
+}
+
+variable "dr" {
+  type        = bool
+  description = "(Optional) Enable DR mode - creates NCC private endpoints to production catalog storage"
+  default     = false
+}
+
+variable "job_spn_client_id" {
+  type        = string
+  description = "(Optional) Service Principal Client ID for job authentication and cross-workspace operations"
+  default     = ""
+  sensitive   = true
+}
+
+variable "job_spn_client_secret" {
+  type        = string
+  description = "(Optional) Service Principal Client Secret for job authentication and cross-workspace operations"
+  default     = ""
+  sensitive   = true
+}

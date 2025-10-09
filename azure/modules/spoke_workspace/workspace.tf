@@ -24,37 +24,49 @@ resource "databricks_directory" "drnotebooks" {
   path = "/drnotebooks"
 }
 
+# Common Service Principal authentication module for DR sync operations
+resource "databricks_notebook" "common_spn" {
+  count = var.dr ? 1 : 0
+  source = "./code/common_spn.py"
+  path   = "${databricks_directory.drnotebooks[0].path}/common_spn"
+  depends_on = [databricks_directory.drnotebooks]
+}
 
 resource "databricks_notebook" "sync_managed_table" {
   count = var.dr ? 1 : 0
   source = "./code/sync_managed_tables.py"
   path   = "${databricks_directory.drnotebooks[0].path}/sync_managed_tables"
-  depends_on = [databricks_directory.drnotebooks]
+  depends_on = [databricks_directory.drnotebooks, databricks_notebook.common_spn]
 }
 resource "databricks_notebook" "sync_external_tables" {
   count = var.dr ? 1 : 0
   source = "./code/sync_external_tables.py"
   path   = "${databricks_directory.drnotebooks[0].path}/sync_external_tables"
+  depends_on = [databricks_directory.drnotebooks, databricks_notebook.common_spn]
 }
 resource "databricks_notebook" "sync_ext_volumes" {
   count = var.dr ? 1 : 0
   source = "./code/sync_ext_volumes.py"
   path   = "${databricks_directory.drnotebooks[0].path}/sync_ext_volumes"
+  depends_on = [databricks_directory.drnotebooks, databricks_notebook.common_spn]
 }
 resource "databricks_notebook" "sync_schemas" {
   count = var.dr ? 1 : 0
   source = "./code/sync_schemas.py"
   path   = "${databricks_directory.drnotebooks[0].path}/sync_schemas"
+  depends_on = [databricks_directory.drnotebooks, databricks_notebook.common_spn]
 }
 resource "databricks_notebook" "sync_views" {
   count = var.dr ? 1 : 0
   source = "./code/sync_views.py"
   path   = "${databricks_directory.drnotebooks[0].path}/sync_views"
+  depends_on = [databricks_directory.drnotebooks, databricks_notebook.common_spn]
 }
 resource "databricks_notebook" "sync_perms" {
   count = var.dr ? 1 : 0
   source = "./code/sync_perms.py"
   path   = "${databricks_directory.drnotebooks[0].path}/sync_perms"
+  depends_on = [databricks_directory.drnotebooks, databricks_notebook.common_spn]
 }
 
 resource "databricks_job" "dr_sync_job" {

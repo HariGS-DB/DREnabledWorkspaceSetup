@@ -16,3 +16,4 @@
 /azure/.terraform.tfstate.lock.info
 /azure/configuration.azure.tfbackend
 /code/
+azure/configuration.azure.tfbackend

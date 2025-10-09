@@ -4,7 +4,7 @@ from databricks.sdk import WorkspaceClient
 from databricks.sdk.service import catalog
 from concurrent.futures import ThreadPoolExecutor
 from databricks.sdk.errors.platform import ResourceAlreadyExists
-from common import target_pat, target_host, source_pat, source_host, num_exec
+from common_spn import w_source, w_target, num_exec
 from databricks.sdk.service.catalog import VolumeType, VolumeInfo
 
 
@@ -43,9 +43,9 @@ def create_volume(w, catalog_name, schema_name, volume_name, location, owner):
         }
 
 
-# create the WorkspaceClient pointed at the target WS
-w_target = WorkspaceClient(host=target_host, token=target_pat)
-w_source = WorkspaceClient(host=source_host, token=source_pat)
+# WorkspaceClients are now created in common_spn module using Service Principal auth
+# w_source: Production workspace client (source)
+# w_target: DR workspace client (target)
 
 # pull system tables from source ws
 system_info = spark.sql("SELECT * FROM system.information_schema.volumes")

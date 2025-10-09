@@ -53,3 +53,29 @@ variable "subscription_id" {
 variable "dr" {
   type = bool
 }
+
+variable "prod_workspace_url" {
+  type        = string
+  description = "(Optional) Production workspace URL for DR configuration. Passed from release pipeline."
+  default     = ""
+}
+
+variable "prod_catalog_storage" {
+  type        = string
+  description = "(Optional) Production catalog storage account ID for DR replication. Passed from release pipeline."
+  default     = ""
+}
+
+variable "job_spn_client_id" {
+  type        = string
+  description = "(Optional) Service Principal Client ID for job authentication and cross-workspace operations"
+  default     = ""
+  sensitive   = true
+}
+
+variable "job_spn_client_secret" {
+  type        = string
+  description = "(Optional) Service Principal Client Secret for job authentication and cross-workspace operations"
+  default     = ""
+  sensitive   = true
+}

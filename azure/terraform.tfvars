@@ -3,6 +3,5 @@ hub_vnet_cidr         = "10.0.0.0/22"
 tags = {
   Owner = "hari.selvarajan@databricks.com"
 }
-subscription_id = "edd4cc45-85c7-4aec-8bf5-648062d519bf"
-
-dr = false
+subscription_id     = "edd4cc45-85c7-4aec-8bf5-648062d519bf"
+job_spn_client_id   = "ba132b4a-3c28-4520-9bbd-07926492f97f"

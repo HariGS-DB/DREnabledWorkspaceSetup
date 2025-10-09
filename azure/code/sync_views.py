@@ -10,13 +10,11 @@ from databricks.sdk.service.sql import StatementState
 from databricks.sdk.service.sql import CreateWarehouseRequestWarehouseType
 from databricks.sdk.service.sql import ExecuteStatementRequestOnWaitTimeout
 from databricks.sdk.service.catalog import TableType
-from common import (
-    target_pat,
-    target_host,
+from common_spn import (
+    w_source,
+    w_target,
     num_exec,
     response_backoff,
-    source_pat,
-    source_host,
     dr_warehouse_id,
 )
 
@@ -67,9 +65,9 @@ def create_view(w, catalog, schema, view_name, view_definition, warehouse):
         }
 
 
-# create the WorkspaceClient pointed at the target WS
-w_target = WorkspaceClient(host=target_host, token=target_pat)
-w_source = WorkspaceClient(host=source_host, token=source_pat)
+# WorkspaceClients are now created in common_spn module using Service Principal auth
+# w_source: Production workspace client (source)
+# w_target: DR workspace client (target)
 
 
 # initialize lists for status tracking
