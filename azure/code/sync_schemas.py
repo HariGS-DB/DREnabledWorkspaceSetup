@@ -1,12 +1,12 @@
 # Databricks notebook source
 from databricks.sdk import WorkspaceClient
 import pandas as pd
-from common import target_pat, target_host, source_pat, source_host
+from common_spn import w_source, w_target
 
 
-# create WorkspaceClient objects
-w_source = WorkspaceClient(host=source_host, token=source_pat)
-w_target = WorkspaceClient(host=target_host, token=target_pat)
+# WorkspaceClients created in common_spn module using Service Principal auth
+# w_source: Production workspace client (source)  
+# w_target: DR workspace client (target)
 
 # get source and target catalogs
 source_catalogs = [x for x in w_source.catalogs.list()]

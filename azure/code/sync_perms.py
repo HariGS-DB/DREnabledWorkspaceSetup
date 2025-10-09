@@ -23,9 +23,7 @@ from databricks.sdk.service import catalog
 from databricks.sdk import WorkspaceClient
 from concurrent.futures import ThreadPoolExecutor
 from databricks.sdk.errors.platform import NotFound
-from common import (target_pat, target_host,
-                    source_pat, source_host,
-                    num_exec)
+from common_spn import (w_source, w_target, num_exec)
 
 
 # helper function to update object grants between source and target WS
@@ -89,9 +87,9 @@ def sync_grants(w_src, w_tgt, obj_name, obj_type):
         return {"name": obj_name, "status": None}
 
 
-# create the WorkspaceClients for source and target workspaces
-w_source = WorkspaceClient(host=source_host, token=source_pat)
-w_target = WorkspaceClient(host=target_host, token=target_pat)
+# WorkspaceClients are now created in common_spn module using Service Principal auth
+# w_source: Production workspace client (source)
+# w_target: DR workspace client (target)
 
 # get all tables in the source ws
 table_info = spark.sql("SELECT * FROM system.information_schema.tables")

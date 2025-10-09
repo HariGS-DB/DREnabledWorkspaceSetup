@@ -25,6 +25,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: self-hosted
     environment: prod
+    outputs:
+      prod_workspace_url: ${{ steps.apply.outputs.prod_workspace_url }}
+      prod_catalog_storage: ${{ steps.apply.outputs.prod_catalog_storage }}
     env:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
       TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
@@ -58,13 +61,17 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
-      - name: Terraform Apply
+      - name: Apply Terraform and Capture Outputs
         id: apply
-        run: terraform apply -no-color -input=false --auto-approve
-        continue-on-error: true
-      - name: Terraform Apply Status
-        if: steps.apply.outcome == 'failure'
-        run: exit 1
+        run: |
+          # Apply Terraform
+          terraform apply -no-color -input=false --auto-approve
+          
+          # Capture outputs directly after successful apply
+          echo "Capturing outputs from Terraform..."
+          echo prod_workspace_url=$(terraform output spoke_workspace_info) >> $GITHUB_OUTPUT
+          echo prod_catalog_storage=$(terraform output catalog_storage_info) >> $GITHUB_OUTPUT
+          echo "✅ Production workspace URL and catalog storage captured"
   release-dr:
     needs: [release-prod]
     if: github.ref == 'refs/heads/main'
@@ -76,6 +83,9 @@ jobs:
       TF_VAR_dr: ${{ vars.TF_VAR_DR }}
       TF_VAR_spoke_suffix: ${{ vars.TF_VAR_SPOKE_SUFFIX }}
       TF_VAR_spoke_tag: ${{ vars.TF_VAR_SPOKE_TAG }}
+      TF_VAR_prod_workspace_url: ${{ needs.release-prod.outputs.prod_workspace_url }}
+      TF_VAR_prod_catalog_storage: ${{ needs.release-prod.outputs.prod_catalog_storage }}
+      TF_VAR_job_spn_client_secret: ${{ secrets.JOB_SPN_CLIENT_SECRET }}
     steps:
       - uses: actions/checkout@v3
       - name: Install Terraform

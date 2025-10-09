@@ -27,11 +27,9 @@ from databricks.sdk.service.sharing import (
     SharedDataObject,
     SharedDataObjectStatus,
 )
-from common import (
-    target_pat,
-    target_host,
-    source_pat,
-    source_host,
+from common_spn import (
+    w_source,
+    w_target,
     num_exec,
     dr_warehouse_id,
     response_backoff,
@@ -113,9 +111,9 @@ def clone_table(
 
 write_results = False  # set to true to write status df to disk
 
-# create the WorkspaceClients for source and target workspaces
-w_source = WorkspaceClient(host=source_host, token=source_pat)
-w_target = WorkspaceClient(host=target_host, token=target_pat)
+# WorkspaceClients are now created in common_spn module using Service Principal auth
+# w_source: Production workspace client (source)
+# w_target: DR workspace client (target)
 
 
 # get all tables in the primary metastore
