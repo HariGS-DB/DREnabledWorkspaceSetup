@@ -70,7 +70,7 @@ jobs:
           # Capture outputs directly after successful apply
           echo "Capturing outputs from Terraform..."
           echo prod_workspace_url=$(terraform output spoke_workspace_info) >> $GITHUB_OUTPUT
-          echo prod_catalog_storage=$(terraform output catalog_storage_info) >> $GITHUB_OUTPUT
+          echo prod_catalog_storage=$(terraform output -json catalog_storage_info) >> $GITHUB_OUTPUT
           echo "✅ Production workspace URL and catalog storage captured"
   release-dr:
     needs: [release-prod]
