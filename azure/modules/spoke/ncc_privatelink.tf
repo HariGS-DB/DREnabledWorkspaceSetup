@@ -11,6 +11,6 @@ resource "databricks_mws_ncc_private_endpoint_rule" "prod_catalog_storage_dfs" {
   count = var.dr && var.prod_catalog_storage != "" ? 1 : 0
   
   network_connectivity_config_id = var.ncc_id
-  resource_id                    = var.prod_catalog_storage
+  resource_id                    = jsondecode(var.prod_catalog_storage)
   group_id                       = "dfs"
 }
