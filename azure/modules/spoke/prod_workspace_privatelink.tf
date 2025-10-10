@@ -1,15 +1,15 @@
 
-# Data source to get production workspace details by workspace URL
+# Data source to get production workspace details by workspace name and location
 data "azurerm_databricks_workspace" "prod" {
-  count = var.dr && var.prod_workspace_url != "" && var.prod_resource_group_name != "" ? 1 : 0
+  count = var.dr  ? 1 : 0
   
-  workspace_url       = var.prod_workspace_url
+  name                = var.prod_workspace_name
   resource_group_name = var.prod_resource_group_name
 }
 
 # Private endpoint for production workspace backend connection (databricks_ui_api)
 resource "azurerm_private_endpoint" "prod_workspace_backend" {
-  count = var.dr && var.prod_workspace_url != "" && var.prod_resource_group_name != "" ? 1 : 0
+  count = var.dr ? 1 : 0
   
   name                = "${module.naming.private_endpoint.name_unique}-prod-backend"
   location            = azurerm_resource_group.this.location

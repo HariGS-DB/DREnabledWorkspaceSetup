@@ -26,6 +26,7 @@ module "spoke" {
   dr                       = var.dr
   job_spn_client_id        = var.job_spn_client_id
   prod_resource_group_name = var.prod_resource_group_name
+  prod_workspace_name      = var.prod_workspace_name
 
 
   #options

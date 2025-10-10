@@ -27,3 +27,8 @@ output "volume_storage" {
   value       = azurerm_storage_account.external_storage
 
 }
+
+output "workspace_name" {
+  description = "Name of the Databricks workspace"
+  value       = azurerm_databricks_workspace.this.name
+}
