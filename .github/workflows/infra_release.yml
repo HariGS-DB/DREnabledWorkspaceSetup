@@ -74,8 +74,8 @@ jobs:
           echo "Capturing outputs from Terraform..."
           PROD_WORKSPACE_URL=$(terraform output spoke_workspace_info)
           PROD_CATALOG_STORAGE=$(terraform output -json catalog_storage_info)
-          PROD_RESOURCE_GROUP_NAME=$(terraform output spoke_resource_group_name)
-          PROD_WORKSPACE_NAME=$(terraform output spoke_workspace_name)
+          PROD_RESOURCE_GROUP_NAME=$(terraform output -raw spoke_resource_group_name)
+          PROD_WORKSPACE_NAME=$(terraform output -raw spoke_workspace_name)
           
           # Debug: Show captured values
           echo "🔍 DEBUG: Captured values:"
@@ -104,7 +104,7 @@ jobs:
       TF_VAR_spoke_tag: ${{ vars.TF_VAR_SPOKE_TAG }}
       TF_VAR_prod_workspace_url: ${{ needs.release-prod.outputs.prod_workspace_url }}
       TF_VAR_prod_catalog_storage: ${{ needs.release-prod.outputs.prod_catalog_storage }}
-      TF_VAR_prod_resource_group_name: "rg-prodspoke"
+      TF_VAR_prod_resource_group_name: ${{ needs.release-prod.outputs.prod_resource_group_name }}
       TF_VAR_prod_workspace_name: ${{ needs.release-prod.outputs.prod_workspace_name }}
       TF_VAR_job_spn_client_secret: ${{ secrets.JOB_SPN_CLIENT_SECRET }}
       
