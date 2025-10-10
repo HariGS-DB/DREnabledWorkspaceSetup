@@ -73,7 +73,7 @@ jobs:
           echo "Capturing outputs from Terraform..."
           echo prod_workspace_url=$(terraform output spoke_workspace_info) >> $GITHUB_OUTPUT
           echo prod_catalog_storage=$(terraform output -json catalog_storage_info) >> $GITHUB_OUTPUT
-          echo prod_rg_name=$(terraform output spoke_resource_group_name) >> $GITHUB_OUTPUT
+          echo prod_rg_name=$(terraform output -json spoke_resource_group_name) >> $GITHUB_OUTPUT
           echo prod_workspace_name=$(terraform output spoke_workspace_name) >> $GITHUB_OUTPUT
           echo "✅ Production workspace info, catalog storage, and resource group captured"
   release-dr:
