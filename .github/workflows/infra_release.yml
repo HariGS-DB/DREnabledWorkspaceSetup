@@ -20,6 +20,7 @@ env:
   BACKEND_CONTAINER_NAME: ${{ vars.BACKEND_CONTAINER_NAME }}
   BACKEND_KEY: ${{ vars.BACKEND_KEY }}
   TERRAFORM_VERSION: 1.4.6
+  TF_LOG: DEBUG
 jobs:
   release-prod:
     if: github.ref == 'refs/heads/main'
@@ -28,7 +29,7 @@ jobs:
     outputs:
       prod_workspace_url: ${{ steps.apply.outputs.prod_workspace_url }}
       prod_catalog_storage: ${{ steps.apply.outputs.prod_catalog_storage }}
-      prod_rg_name: ${{ steps.apply.outputs.prod_rg_name }}
+      prod_resource_group_name: ${{ steps.apply.outputs.prod_resource_group_name }}
       prod_workspace_name: ${{ steps.apply.outputs.prod_workspace_name }}
     env:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
@@ -71,11 +72,25 @@ jobs:
           
           # Capture outputs directly after successful apply
           echo "Capturing outputs from Terraform..."
-          echo prod_workspace_url=$(terraform output spoke_workspace_info) >> $GITHUB_OUTPUT
-          echo prod_catalog_storage=$(terraform output -json catalog_storage_info) >> $GITHUB_OUTPUT
-          echo prod_rg_name=$(terraform output -json spoke_resource_group_name) >> $GITHUB_OUTPUT
-          echo prod_workspace_name=$(terraform output spoke_workspace_name) >> $GITHUB_OUTPUT
+          PROD_WORKSPACE_URL=$(terraform output spoke_workspace_info)
+          PROD_CATALOG_STORAGE=$(terraform output -json catalog_storage_info)
+          PROD_RESOURCE_GROUP_NAME=$(terraform output spoke_resource_group_name)
+          PROD_WORKSPACE_NAME=$(terraform output spoke_workspace_name)
+          
+          # Debug: Show captured values
+          echo "🔍 DEBUG: Captured values:"
+          echo "  PROD_WORKSPACE_URL: '$PROD_WORKSPACE_URL'"
+          echo "  PROD_CATALOG_STORAGE: '$PROD_CATALOG_STORAGE'"
+          echo "  PROD_RESOURCE_GROUP_NAME: '$PROD_RESOURCE_GROUP_NAME'"
+          echo "  PROD_WORKSPACE_NAME: '$PROD_WORKSPACE_NAME'"
+          
+          # Set GitHub outputs
+          echo prod_workspace_url=$PROD_WORKSPACE_URL >> $GITHUB_OUTPUT
+          echo prod_catalog_storage=$PROD_CATALOG_STORAGE >> $GITHUB_OUTPUT
+          echo prod_resource_group_name=$PROD_RESOURCE_GROUP_NAME >> $GITHUB_OUTPUT
+          echo prod_workspace_name=$PROD_WORKSPACE_NAME >> $GITHUB_OUTPUT
           echo "✅ Production workspace info, catalog storage, and resource group captured"
+          
   release-dr:
     needs: [release-prod]
     if: github.ref == 'refs/heads/main'
@@ -89,12 +104,32 @@ jobs:
       TF_VAR_spoke_tag: ${{ vars.TF_VAR_SPOKE_TAG }}
       TF_VAR_prod_workspace_url: ${{ needs.release-prod.outputs.prod_workspace_url }}
       TF_VAR_prod_catalog_storage: ${{ needs.release-prod.outputs.prod_catalog_storage }}
-      TF_VAR_prod_resource_group_name: ${{ needs.release-prod.outputs.prod_rg_name }}
+      TF_VAR_prod_resource_group_name: ${{ needs.release-prod.outputs.prod_resource_group_name }}
       TF_VAR_prod_workspace_name: ${{ needs.release-prod.outputs.prod_workspace_name }}
       TF_VAR_job_spn_client_secret: ${{ secrets.JOB_SPN_CLIENT_SECRET }}
       
     steps:
       - uses: actions/checkout@v3
+      - name: Display Production Info for DR Setup
+        run: |
+          echo "🔍 DEBUG: Production values received from prod stage:"
+          echo "  TF_VAR_prod_workspace_url: '$TF_VAR_prod_workspace_url'"
+          echo "  TF_VAR_prod_catalog_storage: '$TF_VAR_prod_catalog_storage'"
+          echo "  TF_VAR_prod_resource_group_name: '$TF_VAR_prod_resource_group_name'"
+          echo "  TF_VAR_prod_workspace_name: '$TF_VAR_prod_workspace_name'"
+          echo "  TF_VAR_job_spn_client_secret: [REDACTED]"
+          echo ""
+          echo "🏭 Production Workspace URL: $TF_VAR_prod_workspace_url"
+          echo "🗄️ Production Catalog Storage: $TF_VAR_prod_catalog_storage"
+          echo "📁 Production Resource Group: $TF_VAR_prod_resource_group_name"
+          echo "🏷️ Production Workspace Name: $TF_VAR_prod_workspace_name"
+          echo ""
+          echo "This information will be used for:"
+          echo "1. Unity Catalog replication setup"
+          echo "2. Cross-region data synchronization"
+          echo "3. DR failover configuration"
+          echo "4. Private endpoint connections"
+          echo "5. Cross-workspace access configuration"
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2.0.0
         with:
