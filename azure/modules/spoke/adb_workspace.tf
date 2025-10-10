@@ -76,6 +76,6 @@ resource "databricks_mws_ncc_binding" "this" {
 # Assign workspace admin permissions to service principal
 resource "databricks_permission_assignment" "job_spn_admin" {
   
-  principal_id = databricks_user.job_spn_user[0].id
+  principal_id = var.job_spn_client_id
   permissions  = ["ADMIN"]
 }
