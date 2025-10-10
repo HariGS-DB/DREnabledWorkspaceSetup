@@ -81,8 +81,9 @@ data "databricks_service_principal" "job_spn" {
 }
 
 # Assign workspace admin permissions to service principal
-resource "databricks_permission_assignment" "job_spn_admin" {
+resource "databricks_mws_permission_assignment" "job_spn_admin" {
   
   principal_id = data.databricks_service_principal.job_spn.id
   permissions  = ["ADMIN"]
+  workspace_id = azurerm_databricks_workspace.this.workspace_id
 }
