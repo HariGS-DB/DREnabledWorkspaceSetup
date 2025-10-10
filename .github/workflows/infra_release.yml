@@ -28,6 +28,8 @@ jobs:
     outputs:
       prod_workspace_url: ${{ steps.apply.outputs.prod_workspace_url }}
       prod_catalog_storage: ${{ steps.apply.outputs.prod_catalog_storage }}
+      prod_rg_name: ${{ steps.apply.outputs.prod_rg_name }}
+      prod_workspace_name: ${{ steps.apply.outputs.prod_workspace_name }}
     env:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
       TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
