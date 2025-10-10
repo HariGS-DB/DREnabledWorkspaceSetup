@@ -2,7 +2,7 @@
 """
 Common module for DR sync operations using Service Principal authentication.
 This module replaces PAT token authentication with spn credentials
-stored in Databricks secrets.
+stored in Databricks secrets
 """
 
 from databricks.sdk import WorkspaceClient
