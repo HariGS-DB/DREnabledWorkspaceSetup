@@ -74,14 +74,15 @@ resource "databricks_mws_ncc_binding" "this" {
 }
 
 # Data source to get service principal details by client ID
-data "azuread_service_principal" "job_spn" {
+data "databricks_service_principal" "job_spn" {
   
-  client_id = var.job_spn_client_id
+  
+  application_id = var.job_spn_client_id
 }
 
 # Assign workspace admin permissions to service principal
 resource "databricks_permission_assignment" "job_spn_admin" {
   
-  principal_id = data.azuread_service_principal.job_spn.object_id
+  principal_id = data.databricks_service_principal.job_spn.id
   permissions  = ["ADMIN"]
 }
