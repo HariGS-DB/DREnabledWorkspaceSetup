@@ -72,3 +72,17 @@ resource "databricks_mws_ncc_binding" "this" {
   network_connectivity_config_id = var.ncc_id
   workspace_id                   = azurerm_databricks_workspace.this.workspace_id
 }
+
+# Data source to get service principal details by client ID
+data "databricks_service_principal" "job_spn" {
+  
+  
+  application_id = var.job_spn_client_id
+}
+
+# Assign workspace admin permissions to service principal
+resource "databricks_permission_assignment" "job_spn_admin" {
+  
+  principal_id = data.databricks_service_principal.job_spn.id
+  permissions  = ["ADMIN"]
+}

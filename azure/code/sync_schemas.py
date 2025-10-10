@@ -1,7 +1,10 @@
 # Databricks notebook source
 from databricks.sdk import WorkspaceClient
 import pandas as pd
-from common_spn import w_source, w_target
+# COMMAND ----------
+# MAGIC %run ./common_spn
+
+# COMMAND ----------
 
 
 # WorkspaceClients created in common_spn module using Service Principal auth

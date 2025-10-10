@@ -17,3 +17,13 @@ output "catalog_storage_info" {
   description = "Unity Catalog storage account ID"
   value       = module.spoke.catalog_storage.id
 }
+
+output "spoke_resource_group_name" {
+  description = "Name of the spoke resource group"
+  value       = module.spoke.resource_group_name
+}
+
+output "spoke_workspace_name" {
+  description = "Name of the spoke Databricks workspace"
+  value       = module.spoke.workspace_name
+}

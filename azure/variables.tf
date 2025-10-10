@@ -79,3 +79,15 @@ variable "job_spn_client_secret" {
   default     = ""
   sensitive   = true
 }
+
+variable "prod_resource_group_name" {
+  type        = string
+  description = "(Optional) Production workspace resource group name for private endpoint creation in DR mode"
+  default     = ""
+}
+
+variable "prod_workspace_name" {
+  type        = string
+  description = "(Optional) Production workspace name for private endpoint creation in DR mode"
+  default     = ""
+}

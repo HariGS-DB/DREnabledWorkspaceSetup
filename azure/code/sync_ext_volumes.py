@@ -4,7 +4,10 @@ from databricks.sdk import WorkspaceClient
 from databricks.sdk.service import catalog
 from concurrent.futures import ThreadPoolExecutor
 from databricks.sdk.errors.platform import ResourceAlreadyExists
-from common_spn import w_source, w_target, num_exec
+# COMMAND ----------
+# MAGIC %run ./common_spn
+
+# COMMAND ----------
 from databricks.sdk.service.catalog import VolumeType, VolumeInfo
 
 
