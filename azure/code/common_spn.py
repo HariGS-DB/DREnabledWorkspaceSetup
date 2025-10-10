@@ -61,16 +61,13 @@ def create_workspace_client(workspace_url):
     try:
         client_id, client_secret = get_spn_credentials()
         
-        # Create OAuth2 credentials
-        credentials = ClientCredentials(
-            client_id=client_id,
-            client_secret=client_secret
-        )
+        
         
         # Create workspace client
         client = WorkspaceClient(
             host=workspace_url,
-            credentials=credentials
+            client_id=client_id,
+            client_secret=client_secret
         )
         
         return client

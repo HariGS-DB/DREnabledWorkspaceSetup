@@ -20,7 +20,6 @@ env:
   BACKEND_CONTAINER_NAME: ${{ vars.BACKEND_CONTAINER_NAME }}
   BACKEND_KEY: ${{ vars.BACKEND_KEY }}
   TERRAFORM_VERSION: 1.4.6
-  TF_LOG: DEBUG
 jobs:
   release-prod:
     if: github.ref == 'refs/heads/main'
@@ -72,7 +71,7 @@ jobs:
           
           # Capture outputs directly after successful apply
           echo "Capturing outputs from Terraform..."
-          PROD_WORKSPACE_URL=$(terraform output spoke_workspace_info)
+          PROD_WORKSPACE_URL=$(terraform output -raw spoke_workspace_info)
           PROD_CATALOG_STORAGE=$(terraform output -json catalog_storage_info)
           PROD_RESOURCE_GROUP_NAME=$(terraform output -raw spoke_resource_group_name)
           PROD_WORKSPACE_NAME=$(terraform output -raw spoke_workspace_name)
@@ -110,26 +109,6 @@ jobs:
       
     steps:
       - uses: actions/checkout@v3
-      - name: Display Production Info for DR Setup
-        run: |
-          echo "🔍 DEBUG: Production values received from prod stage:"
-          echo "  TF_VAR_prod_workspace_url: '$TF_VAR_prod_workspace_url'"
-          echo "  TF_VAR_prod_catalog_storage: '$TF_VAR_prod_catalog_storage'"
-          echo "  TF_VAR_prod_resource_group_name: '$TF_VAR_prod_resource_group_name'"
-          echo "  TF_VAR_prod_workspace_name: '$TF_VAR_prod_workspace_name'"
-          echo "  TF_VAR_job_spn_client_secret: [REDACTED]"
-          echo ""
-          echo "🏭 Production Workspace URL: $TF_VAR_prod_workspace_url"
-          echo "🗄️ Production Catalog Storage: $TF_VAR_prod_catalog_storage"
-          echo "📁 Production Resource Group: $TF_VAR_prod_resource_group_name"
-          echo "🏷️ Production Workspace Name: $TF_VAR_prod_workspace_name"
-          echo ""
-          echo "This information will be used for:"
-          echo "1. Unity Catalog replication setup"
-          echo "2. Cross-region data synchronization"
-          echo "3. DR failover configuration"
-          echo "4. Private endpoint connections"
-          echo "5. Cross-workspace access configuration"
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2.0.0
         with:
