@@ -7,7 +7,7 @@ from databricks.sdk.errors.platform import ResourceAlreadyExists
 # COMMAND ----------
 # MAGIC %run ./common_spn
 
-# COMMAND ----------
+# COMMAND ------------
 from databricks.sdk.service.catalog import VolumeType, VolumeInfo
 
 
