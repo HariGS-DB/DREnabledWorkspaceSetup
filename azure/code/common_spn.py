@@ -1,6 +1,6 @@
 # Databricks notebook source
 """
-Common module for DR sync operations using Service Principal authentication.
+Common module for DR sync operations using Service Principal authentication
 """
 
 from databricks.sdk import WorkspaceClient
