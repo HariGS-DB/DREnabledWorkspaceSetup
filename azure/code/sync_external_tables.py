@@ -27,13 +27,10 @@ from databricks.sdk.service.sharing import (
     SharedDataObject,
     SharedDataObjectStatus,
 )
-from common_spn import (
-    w_source,
-    w_target,
-    num_exec,
-    dr_warehouse_id,
-    response_backoff,
-)
+# COMMAND ----------
+# MAGIC %run ./common_spn
+
+# COMMAND ----------
 
 
 def get_target_location(

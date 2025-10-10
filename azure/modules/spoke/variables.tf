@@ -132,3 +132,16 @@ variable "dr" {
   default     = false
 }
 
+variable "job_spn_client_id" {
+  type        = string
+  description = "(Optional) Service Principal Client ID for job authentication and cross-workspace operations"
+  default     = ""
+  sensitive   = true
+}
+
+variable "prod_resource_group_name" {
+  type        = string
+  description = "(Optional) Production workspace resource group name for private endpoint creation in DR mode"
+  default     = ""
+}
+

@@ -23,7 +23,10 @@ from databricks.sdk.service import catalog
 from databricks.sdk import WorkspaceClient
 from concurrent.futures import ThreadPoolExecutor
 from databricks.sdk.errors.platform import NotFound
-from common_spn import (w_source, w_target, num_exec)
+# COMMAND ----------
+# MAGIC %run ./common_spn
+
+# COMMAND ----------
 
 
 # helper function to update object grants between source and target WS

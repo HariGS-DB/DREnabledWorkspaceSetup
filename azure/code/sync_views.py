@@ -10,13 +10,10 @@ from databricks.sdk.service.sql import StatementState
 from databricks.sdk.service.sql import CreateWarehouseRequestWarehouseType
 from databricks.sdk.service.sql import ExecuteStatementRequestOnWaitTimeout
 from databricks.sdk.service.catalog import TableType
-from common_spn import (
-    w_source,
-    w_target,
-    num_exec,
-    response_backoff,
-    dr_warehouse_id,
-)
+# COMMAND ----------
+# MAGIC %run ./common_spn
+
+# COMMAND ----------
 
 
 # helper function to create a view
