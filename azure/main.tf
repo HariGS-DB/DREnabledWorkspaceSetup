@@ -41,3 +41,7 @@ module "hub" {
   providers           = { databricks = databricks.mws }
 
 }
+
+data "databricks_current_metastore" "this" {
+  provider = databricks.spoke1
+}

@@ -151,9 +151,9 @@ variable "prod_workspace_name" {
   default     = ""
 }
 
-variable "prod_metastore_id" {
+variable "prod_global_metastore_id" {
   type        = string
-  description = "(Optional) Production metastore ID for cross-workspace operations in DR mode"
+  description = "(Optional) Production global metastore ID (Delta Sharing identifier) for cross-workspace operations in DR mode"
   default     = ""
 }
 

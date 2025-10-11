@@ -32,3 +32,10 @@ output "metastore_id" {
   description = "ID of the Databricks Unity Catalog metastore"
   value       = module.hub.metastore_id
 }
+
+
+# Global Metastore ID (Delta Sharing Identifier) Output
+output "global_metastore_id" {
+  description = "Global metastore ID (Delta Sharing identifier) from the current metastore"
+  value       = data.databricks_current_metastore.this.metastore_info[0].global_metastore_id
+}

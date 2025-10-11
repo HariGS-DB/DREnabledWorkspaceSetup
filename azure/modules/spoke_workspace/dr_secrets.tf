@@ -56,11 +56,11 @@ resource "databricks_secret" "dr_warehouse_id" {
   scope        = databricks_secret_scope.dr_spn_scope[0].name
 }
 
-# Store production metastore ID for cross-workspace Unity Catalog operations
-resource "databricks_secret" "prod_metastore_id" {
-  count = var.dr && var.prod_metastore_id != "" ? 1 : 0
+# Store production global metastore ID (Delta Sharing identifier) for cross-workspace operations
+resource "databricks_secret" "prod_global_metastore_id" {
+  count = var.dr && var.prod_global_metastore_id != "" ? 1 : 0
   
-  key          = "prod-metastore-id"
-  string_value = var.prod_metastore_id
+  key          = "prod-global-metastore-id"
+  string_value = var.prod_global_metastore_id
   scope        = databricks_secret_scope.dr_spn_scope[0].name
 }
