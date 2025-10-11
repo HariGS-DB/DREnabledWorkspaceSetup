@@ -1,8 +1,5 @@
 
 
-# Get current metastore information for delta sharing identifier
-data "databricks_current_metastore" "this" {}
-
 # Define an Azure Databricks access connector resource
 resource "azurerm_databricks_access_connector" "unity_catalog" {
 
