@@ -151,3 +151,9 @@ variable "prod_workspace_name" {
   default     = ""
 }
 
+variable "prod_metastore_id" {
+  type        = string
+  description = "(Optional) Production metastore ID for cross-workspace operations in DR mode"
+  default     = ""
+}
+

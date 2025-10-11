@@ -92,6 +92,8 @@ resource "databricks_job" "dr_sync_job" {
       num_workers   = 4
       spark_version = data.databricks_spark_version.latest_lts.id
       node_type_id  = data.databricks_node_type.smallest.id
+      
+      data_security_mode = "USER_ISOLATION"
     }
   }
 

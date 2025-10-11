@@ -91,3 +91,9 @@ variable "prod_workspace_name" {
   description = "(Optional) Production workspace name for private endpoint creation in DR mode"
   default     = ""
 }
+
+variable "prod_metastore_id" {
+  type        = string
+  description = "(Optional) Production metastore ID for DR configuration. Passed from release pipeline."
+  default     = ""
+}

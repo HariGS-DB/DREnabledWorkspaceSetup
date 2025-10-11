@@ -16,8 +16,8 @@ source_catalogs = [x for x in w_source.catalogs.list()]
 target_catalogs = [x for x in w_target.catalogs.list()]
 
 for catalog in source_catalogs:
-    source_schemas = [x for x in w_source.schemas.list(catalog.name)]
-    target_schemas = [x for x in w_target.schemas.list(catalog.name)]
+    source_schemas = [x for x in w_source.schemas.list(catalog.name) if x.catalog_type in ["INTERNAL_CATALOG", "MANAGED_CATALOG"]]
+    target_schemas = [x for x in w_target.schemas.list(catalog.name) if x.catalog_type in ["INTERNAL_CATALOG", "MANAGED_CATALOG"]]
     source_schema_names = [x.name for x in source_schemas]
     target_schema_names = [x.name for x in target_schemas]
     schema_diff = list(set(source_schema_names) - set(target_schema_names))
