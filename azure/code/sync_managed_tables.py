@@ -25,6 +25,7 @@ from databricks.sdk.service.sharing import (
     SharedDataObjectUpdateAction,
     SharedDataObject,
     SharedDataObjectStatus,
+    SharedDataObjectDataObjectType
 )
 # COMMAND ----------
 # MAGIC %run ./common_spn
@@ -155,7 +156,7 @@ for cat in catalog_list:
         for s in w_source.schemas.list(catalog_name=cat.name)
         for table in w_source.tables.list(catalog_name=cat.name, schema_name=s.name)
         if table.schema_name != "information_schema"
-        and table.table_type == TableType.EXTERNAL
+        and table.table_type == TableType.MANAGED
     ]
 
     unique_schemas = {table.schema_name for table in filtered_tables}
@@ -190,7 +191,7 @@ for cat in catalog_list:
             action=SharedDataObjectUpdateAction.ADD,
             data_object=SharedDataObject(
                 name=f"{cat.name}.{schema}",
-                data_object_type="SCHEMA",
+                data_object_type=SharedDataObjectDataObjectType.SCHEMA,
                 status=SharedDataObjectStatus.ACTIVE,
             ),
         )

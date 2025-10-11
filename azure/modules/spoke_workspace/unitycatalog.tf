@@ -65,6 +65,18 @@ resource "azurerm_role_assignment" "prod_catalog_storage_access" {
   depends_on = [azurerm_databricks_access_connector.unity_catalog]
 }
 
+# Grant DR access connector permissions on production volume storage for external volume operations
+resource "azurerm_role_assignment" "prod_volume_storage_access" {
+  count = var.dr && var.prod_volume_storage != "" ? 1 : 0
+
+  scope                = var.prod_volume_storage  
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_databricks_access_connector.unity_catalog.identity[0].principal_id
+  
+  # Ensure this only runs after the access connector is created
+  depends_on = [azurerm_databricks_access_connector.unity_catalog]
+}
+
 
 resource "databricks_storage_credential" "catalog_credential" {
   name                 = "databricks-${var.resource_suffix}-credential"
@@ -101,7 +113,8 @@ resource "databricks_external_location" "external_deltatable_location" {
 
 resource "databricks_external_location" "external_volume_location" {
   name = "databricks-external-volume-location"
-  url = format("abfss://%s@%s.dfs.core.windows.net",
+  url = var.dr && var.prod_volume_storage != "" ? format("abfss://%s@%s.dfs.core.windows.net",
+    azurerm_storage_container.external_volume.name,regex("[^/]+$", var.prod_volume_storage)) : format("abfss://%s@%s.dfs.core.windows.net",
     azurerm_storage_container.external_volume.name,
     var.volume_storage.name)
 
@@ -147,3 +160,48 @@ resource "databricks_grants" "catalog_admin" {
   }
 
 }
+
+# Grant all privileges to job SPN for catalog external location (DR mode)
+resource "databricks_grants" "catalog_location_job_spn" {
+  count = var.dr && var.job_spn_client_id != "" ? 1 : 0
+  
+  external_location = databricks_external_location.catalog_location.name
+  grant {
+    principal  = var.catalog_admin
+    privileges = ["ALL_PRIVILEGES"]
+  }
+}
+
+# Grant all privileges to job SPN for external delta table location (DR mode)
+resource "databricks_grants" "external_deltatable_location_job_spn" {
+  count = var.dr && var.job_spn_client_id != "" ? 1 : 0
+  
+  external_location = databricks_external_location.external_deltatable_location.name
+  grant {
+    principal  = var.catalog_admin
+    privileges = ["ALL_PRIVILEGES"]
+  }
+}
+
+# Grant all privileges to job SPN for external volume location (DR mode)
+resource "databricks_grants" "external_volume_location_job_spn" {
+  count = var.dr && var.job_spn_client_id != "" ? 1 : 0
+  
+  external_location = databricks_external_location.external_volume_location.name
+  grant {
+    principal  = var.catalog_admin
+    privileges = ["ALL_PRIVILEGES"]
+  }
+}
+
+# Grant all privileges to catalog admin for production external location (DR mode)
+resource "databricks_grants" "prod_external_location_job_spn" {
+  count = var.dr && var.job_spn_client_id != "" && var.prod_catalog_storage != "" ? 1 : 0
+  
+  external_location = databricks_external_location.prod_external_location[0].name
+  grant {
+    principal  = var.catalog_admin
+    privileges = ["ALL_PRIVILEGES"]
+  }
+}
+

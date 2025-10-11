@@ -66,6 +66,12 @@ variable "prod_catalog_storage" {
   default     = ""
 }
 
+variable "prod_volume_storage" {
+  type        = string
+  description = "(Optional) Production volume storage account ID for DR external volume operations. Passed from release pipeline."
+  default     = ""
+}
+
 variable "job_spn_client_id" {
   type        = string
   description = "(Optional) Service Principal Client ID for job authentication and cross-workspace operations"
