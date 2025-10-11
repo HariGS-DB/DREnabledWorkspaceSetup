@@ -10,5 +10,5 @@ output "dr_warehouse_info" {
 # Global Metastore ID (Delta Sharing Identifier) Output
 output "global_metastore_id" {
   description = "Global metastore ID (Delta Sharing identifier) from the current metastore"
-  value       = data.databricks_current_metastore.this.metastore_info["global_metastore_id"]
+  value       = data.databricks_current_metastore.this.metastore_info
 }
