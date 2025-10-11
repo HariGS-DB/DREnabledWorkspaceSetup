@@ -111,6 +111,23 @@ resource "databricks_external_location" "external_volume_location" {
 
 }
 
+# External location for production catalog storage external container (DR mode only)
+resource "databricks_external_location" "prod_external_location" {
+  count = var.dr && var.prod_catalog_storage != "" ? 1 : 0
+
+  name = "prod-external-deltatable-location"
+  url = format("abfss://external@%s.dfs.core.windows.net",
+    regex("[^/]+$", var.prod_catalog_storage))  # Extract storage account name from resource ID
+
+  credential_name = databricks_storage_credential.catalog_credential.id
+  comment         = "Production catalog external container - Managed by TF for DR operations"
+  
+  depends_on = [
+    databricks_storage_credential.catalog_credential,
+    azurerm_role_assignment.prod_catalog_storage_access
+  ]
+}
+
 
 
 

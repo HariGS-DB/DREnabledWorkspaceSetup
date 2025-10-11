@@ -73,7 +73,7 @@ jobs:
           # Capture outputs directly after successful apply
           echo "Capturing outputs from Terraform..."
           PROD_WORKSPACE_URL=$(terraform output -raw spoke_workspace_info)
-          PROD_CATALOG_STORAGE=$(terraform output -json catalog_storage_info)
+          PROD_CATALOG_STORAGE=$(terraform output -raw catalog_storage_info)
           PROD_RESOURCE_GROUP_NAME=$(terraform output -raw spoke_resource_group_name)
           PROD_WORKSPACE_NAME=$(terraform output -raw spoke_workspace_name)
           PROD_METASTORE_ID=$(terraform output -raw metastore_id)
