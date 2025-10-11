@@ -27,3 +27,8 @@ output "spoke_workspace_name" {
   description = "Name of the spoke Databricks workspace"
   value       = module.spoke.workspace_name
 }
+
+output "metastore_id" {
+  description = "ID of the Databricks Unity Catalog metastore"
+  value       = module.hub.metastore_id
+}

@@ -4,7 +4,7 @@ Common module for DR sync operation using Service Principal authentication
 """
 
 from databricks.sdk import WorkspaceClient
-from databricks.sdk.core.oauth import ClientCredentials
+from databricks.sdk.core import ClientCredentials
 
 # Configuration parameters
 num_exec = 10  # Number of concurrent workers
@@ -17,6 +17,7 @@ CLIENT_SECRET_KEY = "client-secret"
 PROD_WORKSPACE_URL_KEY = "prod-workspace-url"
 DR_WAREHOUSE_ID_KEY = "dr-warehouse-id"
 DR_WORKSPACE_URL_KEY = "dr-workspace-url"
+PROD_METASTORE_ID_KEY = "prod-metastore-id"
 
 
 def get_spn_credentials():
@@ -46,6 +47,16 @@ def get_dr_warehouse_id():
         return warehouse_id
     except Exception as e:
         raise RuntimeError(f"Failed to retrieve DR warehouse ID from secrets: {str(e)}")
+
+
+def get_prod_metastore_id():
+    """Get production metastore ID from Databricks secrets."""
+    try:
+        metastore_id = dbutils.secrets.get(scope=SECRET_SCOPE, key=PROD_METASTORE_ID_KEY)
+        return metastore_id
+    except Exception as e:
+        print(f"⚠️  Warning: Could not retrieve production metastore ID from secrets: {str(e)}")
+        return None
 
 
 def create_workspace_client(workspace_url):
@@ -82,10 +93,17 @@ source_host, target_host = get_workspace_urls()
 # Get DR warehouse ID from secrets
 dr_warehouse_id = get_dr_warehouse_id()
 
+# Get production metastore ID from secrets (optional for cross-workspace operations)
+prod_metastore_id = get_prod_metastore_id()
+
 # Create authenticated workspace clients
 print(f"🔗 Connecting to source workspace: {source_host}")
 print(f"🔗 Connecting to target workspace: {target_host}")
 print(f"🏭 Using DR warehouse: {dr_warehouse_id}")
+if prod_metastore_id:
+    print(f"🗄️ Production metastore available: {prod_metastore_id}")
+else:
+    print("ℹ️  Production metastore ID not available (operating in single workspace mode)")
 
 try:
     w_source = create_workspace_client(source_host)

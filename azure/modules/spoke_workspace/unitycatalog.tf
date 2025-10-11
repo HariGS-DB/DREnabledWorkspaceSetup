@@ -53,6 +53,18 @@ resource "azurerm_role_assignment" "volume_storage_access" {
   principal_id         = azurerm_databricks_access_connector.unity_catalog.identity[0].principal_id
 }
 
+# Grant DR access connector permissions on production catalog storage for cross-workspace Unity Catalog operations
+resource "azurerm_role_assignment" "prod_catalog_storage_access" {
+  count = var.dr && var.prod_catalog_storage != "" ? 1 : 0
+
+  scope                = var.prod_catalog_storage  
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_databricks_access_connector.unity_catalog.identity[0].principal_id
+  
+  # Ensure this only runs after the access connector is created
+  depends_on = [azurerm_databricks_access_connector.unity_catalog]
+}
+
 
 resource "databricks_storage_credential" "catalog_credential" {
   name                 = "databricks-${var.resource_suffix}-credential"

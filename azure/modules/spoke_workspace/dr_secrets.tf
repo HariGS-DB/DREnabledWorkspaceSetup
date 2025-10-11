@@ -55,3 +55,12 @@ resource "databricks_secret" "dr_warehouse_id" {
   string_value = databricks_sql_endpoint.dr_warehouse[0].id
   scope        = databricks_secret_scope.dr_spn_scope[0].name
 }
+
+# Store production metastore ID for cross-workspace Unity Catalog operations
+resource "databricks_secret" "prod_metastore_id" {
+  count = var.dr && var.prod_metastore_id != "" ? 1 : 0
+  
+  key          = "prod-metastore-id"
+  string_value = var.prod_metastore_id
+  scope        = databricks_secret_scope.dr_spn_scope[0].name
+}
