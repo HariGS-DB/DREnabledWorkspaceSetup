@@ -30,7 +30,7 @@ jobs:
       prod_catalog_storage: ${{ steps.apply.outputs.prod_catalog_storage }}
       prod_resource_group_name: ${{ steps.apply.outputs.prod_resource_group_name }}
       prod_workspace_name: ${{ steps.apply.outputs.prod_workspace_name }}
-      prod_metastore_id: ${{ steps.apply.outputs.prod_metastore_id }}
+      prod_global_metastore_id: ${{ steps.apply.outputs.prod_global_metastore_id }}
     env:
       TF_VAR_location: ${{ vars.TF_VAR_LOCATION }}
       TF_VAR_hub_resource_suffix: ${{ vars.TF_VAR_HUB_RESOURCE_SUFFIX }}
@@ -76,7 +76,7 @@ jobs:
           PROD_CATALOG_STORAGE=$(terraform output -raw catalog_storage_info)
           PROD_RESOURCE_GROUP_NAME=$(terraform output -raw spoke_resource_group_name)
           PROD_WORKSPACE_NAME=$(terraform output -raw spoke_workspace_name)
-          PROD_METASTORE_ID=$(terraform output -raw metastore_id)
+          PROD_GLOBAL_METASTORE_ID=$(terraform output -raw global_metastore_id)
           
           # Debug: Show captured values
           echo "🔍 DEBUG: Captured values:"
@@ -84,14 +84,14 @@ jobs:
           echo "  PROD_CATALOG_STORAGE: '$PROD_CATALOG_STORAGE'"
           echo "  PROD_RESOURCE_GROUP_NAME: '$PROD_RESOURCE_GROUP_NAME'"
           echo "  PROD_WORKSPACE_NAME: '$PROD_WORKSPACE_NAME'"
-          echo "  PROD_METASTORE_ID: '$PROD_METASTORE_ID'"
+          echo "  PROD_GLOBAL_METASTORE_ID: '$PROD_GLOBAL_METASTORE_ID'"
           
           # Set GitHub outputs
           echo prod_workspace_url=$PROD_WORKSPACE_URL >> $GITHUB_OUTPUT
           echo prod_catalog_storage=$PROD_CATALOG_STORAGE >> $GITHUB_OUTPUT
           echo prod_resource_group_name=$PROD_RESOURCE_GROUP_NAME >> $GITHUB_OUTPUT
           echo prod_workspace_name=$PROD_WORKSPACE_NAME >> $GITHUB_OUTPUT
-          echo prod_metastore_id=$PROD_METASTORE_ID >> $GITHUB_OUTPUT
+          echo prod_global_metastore_id=$PROD_GLOBAL_METASTORE_ID >> $GITHUB_OUTPUT
           echo "✅ Production workspace info, catalog storage, and resource group captured"
           
   release-dr:
@@ -109,7 +109,7 @@ jobs:
       TF_VAR_prod_catalog_storage: ${{ needs.release-prod.outputs.prod_catalog_storage }}
       TF_VAR_prod_resource_group_name: ${{ needs.release-prod.outputs.prod_resource_group_name }}
       TF_VAR_prod_workspace_name: ${{ needs.release-prod.outputs.prod_workspace_name }}
-      TF_VAR_prod_metastore_id: ${{ needs.release-prod.outputs.prod_metastore_id }}
+      TF_VAR_prod_global_metastore_id: ${{ needs.release-prod.outputs.prod_global_metastore_id }}
       TF_VAR_job_spn_client_secret: ${{ secrets.JOB_SPN_CLIENT_SECRET }}
       
     steps:

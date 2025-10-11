@@ -6,3 +6,9 @@ output "dr_warehouse_info" {
     warehouse_name = databricks_sql_endpoint.dr_warehouse[0].name
   } : null
 }
+
+# Global Metastore ID (Delta Sharing Identifier) Output
+output "global_metastore_id" {
+  description = "Global metastore ID (Delta Sharing identifier) from the current metastore"
+  value       = data.databricks_current_metastore.this.metastore_info["global_metastore_id"]
+}

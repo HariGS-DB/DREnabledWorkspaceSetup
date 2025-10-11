@@ -17,7 +17,7 @@ CLIENT_SECRET_KEY = "client-secret"
 PROD_WORKSPACE_URL_KEY = "prod-workspace-url"
 DR_WAREHOUSE_ID_KEY = "dr-warehouse-id"
 DR_WORKSPACE_URL_KEY = "dr-workspace-url"
-PROD_METASTORE_ID_KEY = "prod-metastore-id"
+PROD_GLOBAL_METASTORE_ID_KEY = "prod-global-metastore-id"
 
 
 def get_spn_credentials():
@@ -49,14 +49,17 @@ def get_dr_warehouse_id():
         raise RuntimeError(f"Failed to retrieve DR warehouse ID from secrets: {str(e)}")
 
 
-def get_prod_metastore_id():
-    """Get production metastore ID from Databricks secrets."""
+
+
+def get_prod_global_metastore_id():
+    """Get production global metastore ID (Delta Sharing identifier) from Databricks secrets."""
     try:
-        metastore_id = dbutils.secrets.get(scope=SECRET_SCOPE, key=PROD_METASTORE_ID_KEY)
-        return metastore_id
+        global_metastore_id = dbutils.secrets.get(scope=SECRET_SCOPE, key=PROD_GLOBAL_METASTORE_ID_KEY)
+        return global_metastore_id
     except Exception as e:
-        print(f"⚠️  Warning: Could not retrieve production metastore ID from secrets: {str(e)}")
+        print(f"⚠️  Warning: Could not retrieve production global metastore ID from secrets: {str(e)}")
         return None
+
 
 
 def create_workspace_client(workspace_url):
@@ -93,17 +96,16 @@ source_host, target_host = get_workspace_urls()
 # Get DR warehouse ID from secrets
 dr_warehouse_id = get_dr_warehouse_id()
 
-# Get production metastore ID from secrets (optional for cross-workspace operations)
-prod_metastore_id = get_prod_metastore_id()
+# Get production global metastore ID (Delta Sharing identifier) from secrets
+prod_global_metastore_id = get_prod_global_metastore_id()
+
 
 # Create authenticated workspace clients
 print(f"🔗 Connecting to source workspace: {source_host}")
 print(f"🔗 Connecting to target workspace: {target_host}")
 print(f"🏭 Using DR warehouse: {dr_warehouse_id}")
-if prod_metastore_id:
-    print(f"🗄️ Production metastore available: {prod_metastore_id}")
-else:
-    print("ℹ️  Production metastore ID not available (operating in single workspace mode)")
+if prod_global_metastore_id:
+    print(f"🆔 Production global metastore ID (Delta Sharing): {prod_global_metastore_id}")
 
 try:
     w_source = create_workspace_client(source_host)
@@ -116,6 +118,8 @@ try:
     print(f"✅ Source workspace connected as: {source_user.user_name}")
     print(f"✅ Target workspace connected as: {target_user.user_name}")
     print(f"✅ DR warehouse ID retrieved: {dr_warehouse_id}")
+    if prod_global_metastore_id:
+        print(f"✅ Production global metastore ID (Delta Sharing) available: {prod_global_metastore_id}")
     
 except Exception as e:
     print(f"❌ Failed to establish workspace connections: {str(e)}")

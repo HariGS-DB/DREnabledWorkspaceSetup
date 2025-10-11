@@ -27,7 +27,7 @@ module "spoke" {
   job_spn_client_id        = var.job_spn_client_id
   prod_resource_group_name = var.prod_resource_group_name
   prod_workspace_name      = var.prod_workspace_name
-  prod_metastore_id        = var.prod_metastore_id
+  prod_global_metastore_id = var.prod_global_metastore_id
 
 
   #options
@@ -60,8 +60,8 @@ module "spoke_workspace" {
   job_spn_client_secret     = var.job_spn_client_secret
   prod_workspace_url        = var.prod_workspace_url
   workspace_url             = module.spoke.workspace_urls
-  prod_metastore_id         = var.prod_metastore_id
   prod_catalog_storage      = var.prod_catalog_storage
+  prod_global_metastore_id  = var.prod_global_metastore_id
 
   depends_on = [module.spoke]
   providers  = { databricks = databricks.spoke1 }

@@ -67,14 +67,14 @@ variable "workspace_url" {
   description = "(Required) Current workspace URL for DR configuration"
 }
 
-variable "prod_metastore_id" {
-  type        = string
-  description = "(Optional) Production metastore ID for cross-workspace operations in DR mode"
-  default     = ""
-}
-
 variable "prod_catalog_storage" {
   type        = string
   description = "(Optional) Production catalog storage account ID for cross-workspace Unity Catalog operations in DR mode"
+  default     = ""
+}
+
+variable "prod_global_metastore_id" {
+  type        = string
+  description = "(Optional) Production global metastore ID (Delta Sharing identifier) for cross-workspace operations in DR mode"
   default     = ""
 }

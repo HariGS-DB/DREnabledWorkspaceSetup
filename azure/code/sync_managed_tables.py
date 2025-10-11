@@ -126,7 +126,7 @@ try:
     remote_provider_name = [
         p.name
         for p in w_target.providers.list()
-        if p.data_provider_global_metastore_id == prod_metastore_id
+        if p.data_provider_global_metastore_id == prod_global_metastore_id
     ][0]
 except IndexError:
     print(
