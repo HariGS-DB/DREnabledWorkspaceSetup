@@ -61,6 +61,7 @@ module "spoke_workspace" {
   prod_workspace_url        = var.prod_workspace_url
   workspace_url             = module.spoke.workspace_urls
   prod_catalog_storage      = var.prod_catalog_storage
+  prod_volume_storage       = var.prod_volume_storage
   prod_global_metastore_id  = var.prod_global_metastore_id
 
   depends_on = [module.spoke]

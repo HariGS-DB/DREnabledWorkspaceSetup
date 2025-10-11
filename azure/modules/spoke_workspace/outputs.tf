@@ -6,3 +6,5 @@ output "dr_warehouse_info" {
     warehouse_name = databricks_sql_endpoint.dr_warehouse[0].name
   } : null
 }
+
+

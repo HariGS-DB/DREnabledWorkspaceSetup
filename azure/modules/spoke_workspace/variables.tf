@@ -73,6 +73,12 @@ variable "prod_catalog_storage" {
   default     = ""
 }
 
+variable "prod_volume_storage" {
+  type        = string
+  description = "(Optional) Production volume storage account ID for external volume operations in DR mode"
+  default     = ""
+}
+
 variable "prod_global_metastore_id" {
   type        = string
   description = "(Optional) Production global metastore ID (Delta Sharing identifier) for cross-workspace operations in DR mode"
